@@ -6018,6 +6018,16 @@
             updateLogoColor();
         });
     </script>
+<script>
+(function () {
+    const API = "https://ceroviel-api.ceroviel.workers.dev";
 
+    const user = localStorage.getItem("ceroviel_user");
+
+    if (!user) {
+        window.location.href = "login.html";
+    }
+})();
+</script>
 </body>
 </html>
