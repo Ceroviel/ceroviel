@@ -2179,7 +2179,9 @@
                         <button class="btn btn-sm active" data-theme="dark" onclick="setThemeMode('dark')"><i class="fa-solid fa-moon"></i></button>
                         <button class="btn btn-sm" data-theme="light" onclick="setThemeMode('light')"><i class="fa-solid fa-sun"></i></button>
                         <button class="btn btn-sm" data-theme="system" onclick="setThemeMode('system')"><i class="fa-solid fa-desktop"></i></button>
-                    </div>
+                    </div><a href="login.html" class="header-icon" id="authButton" title="Login">
+    <i class="fa-solid fa-user"></i>
+</a>
                     <div class="header-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
                 </div>
             </div>
@@ -6017,5 +6019,40 @@
             console.log('Ceroviel initialized successfully.');
             updateLogoColor();
         });
-  
+    </script>
+    <script>
+(function () {
+    const authButton = document.getElementById("authButton");
+
+    if (!authButton) return;
+
+    const savedUser = localStorage.getItem("ceroviel_user");
+
+    if (savedUser) {
+        try {
+            const user = JSON.parse(savedUser);
+
+            authButton.title = `Logged in as ${user.username}`;
+            authButton.innerHTML = `<i class="fa-solid fa-user-check"></i>`;
+
+            authButton.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                const logout = confirm(
+                    `Logged in as ${user.username}\n\nDo you want to log out?`
+                );
+
+                if (logout) {
+                    localStorage.removeItem("ceroviel_user");
+                    location.reload();
+                }
+            });
+
+        } catch (error) {
+            localStorage.removeItem("ceroviel_user");
+        }
+    }
+})();
+</script>
+</body>
 </html>
