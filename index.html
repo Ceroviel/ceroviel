@@ -255,6 +255,8 @@
         /* ── INPUTS ── */
         input[type="text"],
         input[type="number"],
+        input[type="password"],
+        input[type="email"],
         textarea,
         select {
             width: 100%;
@@ -656,6 +658,16 @@
             font-variant-numeric: tabular-nums;
             border-radius: 18px !important;
         }
+        .calc-sci-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+        .calc-sci-row .calc-key {
+            padding: 0.65rem 0.2rem;
+            font-size: 0.8rem;
+        }
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -682,6 +694,11 @@
         }
         .calc-key.op {
             color: var(--primary);
+        }
+        .calc-key.calc-op-right {
+            background: var(--surface-3);
+            color: var(--primary);
+            font-size: 1.15rem;
         }
         .calc-key.equals {
             background: linear-gradient(135deg, var(--primary), var(--primary-soft));
@@ -2179,9 +2196,9 @@
                         <button class="btn btn-sm active" data-theme="dark" onclick="setThemeMode('dark')"><i class="fa-solid fa-moon"></i></button>
                         <button class="btn btn-sm" data-theme="light" onclick="setThemeMode('light')"><i class="fa-solid fa-sun"></i></button>
                         <button class="btn btn-sm" data-theme="system" onclick="setThemeMode('system')"><i class="fa-solid fa-desktop"></i></button>
-                    </div><a href="login.html" class="header-icon" id="authButton" title="Login">
+                    </div><div class="header-icon" id="authButton" title="Login" onclick="navTo('login-view')" style="cursor:pointer;">
     <i class="fa-solid fa-user"></i>
-</a>
+</div>
                     <div class="header-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
                 </div>
             </div>
@@ -2204,12 +2221,11 @@
                 <button class="quick-item" onclick="navTo('clock-view')"><div class="quick-icon"><i class="fa-regular fa-clock"></i></div><span>Timer</span></button>
                 <button class="quick-item" onclick="navTo('notes-view')"><div class="quick-icon"><i class="fa-solid fa-note-sticky"></i></div><span>Notes</span></button>
                 <button class="quick-item" onclick="navTo('scientific-view')"><div class="quick-icon"><i class="fa-solid fa-calculator"></i></div><span>Calculator</span></button>
-                <button class="quick-item" onclick="navTo('health-view')"><div class="quick-icon"><i class="fa-solid fa-heart"></i></div><span>Health</span></button>
+                <button class="quick-item" onclick="navTo('health-hub-view')"><div class="quick-icon"><i class="fa-solid fa-heart"></i></div><span>Health</span></button>
                 <button class="quick-item" onclick="navTo('llama-view')"><div class="quick-icon"><i class="fa-solid fa-brain"></i></div><span>AI</span></button>
                 <button class="quick-item" onclick="navTo('downloader-view')"><div class="quick-icon"><i class="fa-solid fa-download"></i></div><span>MP3/4</span></button>
                 <button class="quick-item" onclick="navTo('minigames-view')"><div class="quick-icon"><i class="fa-solid fa-gamepad"></i></div><span>Minigames</span></button>
                 <button class="quick-item" onclick="navTo('formula-view')"><div class="quick-icon"><i class="fa-solid fa-book-open"></i></div><span>Formula Vault</span></button>
-                <button class="quick-item" onclick="navTo('calorie-view')"><div class="quick-icon"><i class="fa-solid fa-utensils"></i></div><span>Calories</span></button>
                 <button class="quick-item" onclick="navTo('history-view')"><div class="quick-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><span>History</span></button>
             </div>
             <div class="card quote-card"><div class="quote-mark">“</div><p>Discipline today. Success tomorrow.</p><small>— Your Future Self</small></div>
@@ -2644,12 +2660,7 @@
                     <button class="btn btn-sm btn-outline" onclick="navTo('graph-view')">Graph</button>
                 </div>
                 <input type="text" id="calc-display" class="calculator-display" placeholder="0" readonly />
-                <div class="calc-grid">
-                    <button class="calc-key" onclick="calcClear()">AC</button>
-                    <button class="calc-key" onclick="calcBackspace()">⌫</button>
-                    <button class="calc-key op" onclick="calcAppend('%')">%</button>
-                    <button class="calc-key op" onclick="calcAppend('(')">(</button>
-                    <button class="calc-key op" onclick="calcAppend(')')">)</button>
+                <div class="calc-sci-row">
                     <button class="calc-key op" onclick="calcAppend('sin(')">sin</button>
                     <button class="calc-key op" onclick="calcAppend('cos(')">cos</button>
                     <button class="calc-key op" onclick="calcAppend('tan(')">tan</button>
@@ -2657,22 +2668,30 @@
                     <button class="calc-key op" onclick="calcAppend('log(')">log</button>
                     <button class="calc-key op" onclick="calcAppend('ln(')">ln</button>
                     <button class="calc-key op" onclick="calcAppend('^')">xʸ</button>
-                    <button class="calc-key op" onclick="calcAppend('/')">÷</button>
+                    <button class="calc-key op" onclick="calcAppend('(')">(</button>
+                    <button class="calc-key op" onclick="calcAppend(')')">)</button>
+                    <button class="calc-key op" onclick="calcAppend('%')">%</button>
+                </div>
+                <div class="calc-grid">
+                    <button class="calc-key" onclick="calcClear()">AC</button>
+                    <button class="calc-key" onclick="calcBackspace()">⌫</button>
+                    <button class="calc-key" onclick="calcAppend('.')">.</button>
+                    <button class="calc-key op calc-op-right" onclick="calcAppend('/')">÷</button>
                     <button class="calc-key" onclick="calcAppend('7')">7</button>
                     <button class="calc-key" onclick="calcAppend('8')">8</button>
                     <button class="calc-key" onclick="calcAppend('9')">9</button>
-                    <button class="calc-key op" onclick="calcAppend('*')">×</button>
+                    <button class="calc-key op calc-op-right" onclick="calcAppend('*')">×</button>
                     <button class="calc-key" onclick="calcAppend('4')">4</button>
                     <button class="calc-key" onclick="calcAppend('5')">5</button>
                     <button class="calc-key" onclick="calcAppend('6')">6</button>
-                    <button class="calc-key op" onclick="calcAppend('-')">−</button>
+                    <button class="calc-key op calc-op-right" onclick="calcAppend('-')">−</button>
                     <button class="calc-key" onclick="calcAppend('1')">1</button>
                     <button class="calc-key" onclick="calcAppend('2')">2</button>
                     <button class="calc-key" onclick="calcAppend('3')">3</button>
-                    <button class="calc-key op" onclick="calcAppend('+')">+</button>
+                    <button class="calc-key op calc-op-right" onclick="calcAppend('+')">+</button>
                     <button class="calc-key wide" onclick="calcAppend('0')">0</button>
                     <button class="calc-key" onclick="calcAppend('.')">.</button>
-                    <button class="calc-key equals" onclick="calcEvaluate()">=</button>
+                    <button class="calc-key equals calc-op-right" onclick="calcEvaluate()">=</button>
                 </div>
                 <div class="calc-help">Supports %, powers, parentheses and scientific functions. Trigonometry uses radians.</div>
                 <div class="flex-between mt-1">
@@ -2693,11 +2712,31 @@
             </div>
         </div>
 
+        <!-- ═══ HEALTH HUB ═══ -->
+        <div id="health-hub-view" class="view-section">
+            <div class="card">
+                <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-heart-pulse"></i> Health & Wellness</h2>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <button class="btn btn-accent" style="height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;" onclick="navTo('health-view')">
+                        <i class="fa-solid fa-weight-scale" style="font-size:1.8rem;"></i><span style="font-size:.95rem;">BMI Calculator</span>
+                    </button>
+                    <button class="btn btn-accent" style="height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;" onclick="navTo('calorie-view')">
+                        <i class="fa-solid fa-utensils" style="font-size:1.8rem;"></i><span style="font-size:.95rem;">Calorie Tracker</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- ═══ HEALTH ═══ -->
         <div id="health-view" class="view-section">
             <div class="card">
-                <div class="app-kicker">PERSONAL TARGETS</div>
-                <h2>Health &amp; Nutrition</h2>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <a href="#" onclick="navTo('health-hub-view');return false;" style="color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back to Health"><i class="fa-solid fa-arrow-left"></i></a>
+                    <div>
+                        <div class="app-kicker">PERSONAL TARGETS</div>
+                        <h2 style="margin-bottom:0;">Health &amp; Nutrition</h2>
+                    </div>
+                </div>
                 <input type="number" id="health-age" placeholder="Age (years)" min="13" max="100" />
                 <label class="input-label">Sex</label>
                 <select id="health-sex"><option value="male">Boy / Male</option><option value="female">Girl / Female</option></select>
@@ -2727,22 +2766,25 @@
         <!-- ═══ CALORIE COUNTER ═══ -->
         <div id="calorie-view" class="view-section">
             <div class="card">
-                <h2><i class="fa-solid fa-utensils"></i> Calorie &amp; Protein Tracker</h2>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <a href="#" onclick="navTo('health-hub-view');return false;" style="color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back to Health"><i class="fa-solid fa-arrow-left"></i></a>
+                    <h2 style="margin-bottom:0;"><i class="fa-solid fa-utensils"></i> Calorie &amp; Protein Tracker</h2>
+                </div>
                 <div class="food-search-row">
-                    <input type="text" id="food-input" placeholder="Search food... e.g. apple, rice, chicken" autocomplete="off" />
-                    <button class="btn btn-primary" id="food-search-btn"><i class="fa-solid fa-search"></i> Find</button>
+                    <input type="text" id="food-input" placeholder="Search food... e.g. apple, rice, egg" autocomplete="off" />
+                    <button class="btn btn-primary" id="food-search-btn"><i class="fa-solid fa-search"></i></button>
                 </div>
                 <div class="suggestions" id="food-suggestions"></div>
                 <div class="food-result" id="food-result" style="display:none;">
                     <div>
                         <span class="food-name" id="food-name">—</span>
-                        <div style="font-size:0.7rem;color:var(--text-muted);" id="food-serving-label">Serving: 1 unit</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);" id="food-serving-label">per 100g</div>
                     </div>
                     <div class="food-macros">
                         <span>🔥 <strong id="food-cal">—</strong> kcal</span>
-                        <span>💪 <strong id="food-protein">—</strong> g</span>
-                        <span>🍞 <strong id="food-carbs">—</strong> g</span>
-                        <span>🧈 <strong id="food-fat">—</strong> g</span>
+                        <span>💪 <strong id="food-protein">—</strong>g</span>
+                        <span>🍞 <strong id="food-carbs">—</strong>g</span>
+                        <span>🧈 <strong id="food-fat">—</strong>g</span>
                     </div>
                 </div>
                 <div class="meal-categories">
@@ -2751,18 +2793,14 @@
                     <button class="btn btn-sm" data-meal="dinner">Dinner</button>
                     <button class="btn btn-sm" data-meal="snacks">Snacks</button>
                 </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-                    <input type="number" id="food-serving-size" placeholder="Quantity" value="100" min="0.1" step="0.1" style="width:80px;flex:0 0 auto;" />
-                    <select id="food-serving-unit" style="width:auto;flex:1;min-width:80px;">
-                        <option value="g" selected>g</option>
-                        <option value="unit">unit</option>
+                <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;">
+                    <input type="number" id="food-serving-size" placeholder="Qty" value="1" min="0.1" step="0.1" style="width:70px;flex:0 0 auto;" />
+                    <select id="food-serving-unit" style="width:auto;flex:0 0 auto;min-width:70px;">
+                        <option value="unit" selected>piece</option>
+                        <option value="g">g</option>
                         <option value="kg">kg</option>
-                        <option value="ml">ml</option>
-                        <option value="cup">cup</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="tsp">tsp</option>
                     </select>
-                    <button class="btn btn-success" id="food-add-btn"><i class="fa-solid fa-plus"></i> Add to Meal</button>
+                    <button class="btn btn-success" id="food-add-btn" style="flex:1;"><i class="fa-solid fa-plus"></i> Add</button>
                 </div>
                 <div class="daily-summary" id="daily-summary">
                     <div class="stat"><div class="num" id="day-cal">0</div><div class="label">Calories</div></div>
@@ -2770,7 +2808,6 @@
                     <div class="stat"><div class="num" id="day-carbs">0</div><div class="label">Carbs (g)</div></div>
                     <div class="stat"><div class="num" id="day-fat">0</div><div class="label">Fat (g)</div></div>
                 </div>
-                <div class="food-source-note">Values are calculated from an explicit per-100-g basis. Unsupported household-unit conversions and variable recipes return N/A.</div>
                 <div class="food-entry-list" id="food-entry-list"></div>
                 <div class="btn-group mt-1">
                     <button class="btn btn-sm btn-outline" onclick="clearDayEntries()"><i class="fa-solid fa-trash"></i> Clear Today</button>
@@ -2803,6 +2840,40 @@
                     <button class="btn btn-sm btn-danger" onclick="clearAllHistory()"><i class="fa-solid fa-trash"></i> Clear All</button>
                 </div>
                 <input type="file" id="history-file-input" accept=".json" style="display:none;" onchange="handleHistoryImport(event)" />
+            </div>
+        </div>
+
+        <!-- ─── LOGIN VIEW ─── -->
+        <div id="login-view" class="view-section">
+            <div class="card" style="max-width:400px;margin:0 auto;position:relative;">
+                <a href="#" onclick="navTo('home-view');return false;" style="position:absolute;top:18px;left:18px;color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back to Home"><i class="fa-solid fa-arrow-left"></i></a>
+                <h2 style="text-align:center;"><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
+                <input id="login-username" type="text" placeholder="Username" autocomplete="username">
+                <input id="login-password" type="password" placeholder="Password" autocomplete="current-password">
+                <button class="btn" id="loginBtn">Login</button>
+                <div id="login-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
+                <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
+                    Don't have an account?
+                    <a href="#" onclick="navTo('signup-view');return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIGNUP VIEW ─── -->
+        <div id="signup-view" class="view-section">
+            <div class="card" style="max-width:400px;margin:0 auto;position:relative;">
+                <a href="#" onclick="navTo('home-view');return false;" style="position:absolute;top:18px;left:18px;color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back to Home"><i class="fa-solid fa-arrow-left"></i></a>
+                <h2 style="text-align:center;"><i class="fa-solid fa-user-plus"></i> Create Account</h2>
+                <input id="signup-username" type="text" placeholder="Username" autocomplete="username">
+                <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
+                <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
+                <input id="signup-confirm" type="password" placeholder="Confirm Password" autocomplete="new-password">
+                <button class="btn" id="signupBtn">Sign Up</button>
+                <div id="signup-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
+                <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
+                    Already have an account?
+                    <a href="#" onclick="navTo('login-view');return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">Login</a>
+                </div>
             </div>
         </div>
 
@@ -4781,41 +4852,41 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         const FOOD_DB = [
-            { name: 'apple', calories: 52, protein: 0.3, carbs: 14, fat: 0.2 },
-            { name: 'banana', calories: 89, protein: 1.1, carbs: 23, fat: 0.3 },
-            { name: 'orange', calories: 47, protein: 0.9, carbs: 12, fat: 0.1 },
-            { name: 'mango', calories: 60, protein: 0.8, carbs: 15, fat: 0.4 },
+            { name: 'apple', calories: 52, protein: 0.3, carbs: 14, fat: 0.2, gramsPerUnit: 182 },
+            { name: 'banana', calories: 89, protein: 1.1, carbs: 23, fat: 0.3, gramsPerUnit: 118 },
+            { name: 'orange', calories: 47, protein: 0.9, carbs: 12, fat: 0.1, gramsPerUnit: 131 },
+            { name: 'mango', calories: 60, protein: 0.8, carbs: 15, fat: 0.4, gramsPerUnit: 200 },
             { name: 'grapes', calories: 69, protein: 0.7, carbs: 18, fat: 0.2 },
             { name: 'watermelon', calories: 30, protein: 0.6, carbs: 8, fat: 0.2 },
             { name: 'pineapple', calories: 50, protein: 0.5, carbs: 13, fat: 0.1 },
-            { name: 'strawberry', calories: 32, protein: 0.7, carbs: 8, fat: 0.3 },
+            { name: 'strawberry', calories: 32, protein: 0.7, carbs: 8, fat: 0.3, gramsPerUnit: 12 },
             { name: 'blueberry', calories: 57, protein: 0.7, carbs: 14, fat: 0.3 },
             { name: 'raspberry', calories: 52, protein: 1.2, carbs: 12, fat: 0.6 },
-            { name: 'peach', calories: 39, protein: 0.9, carbs: 10, fat: 0.3 },
-            { name: 'pear', calories: 57, protein: 0.4, carbs: 15, fat: 0.1 },
-            { name: 'kiwi', calories: 61, protein: 1.1, carbs: 15, fat: 0.5 },
-            { name: 'lemon', calories: 29, protein: 1.1, carbs: 9, fat: 0.3 },
-            { name: 'lime', calories: 30, protein: 0.7, carbs: 11, fat: 0.2 },
+            { name: 'peach', calories: 39, protein: 0.9, carbs: 10, fat: 0.3, gramsPerUnit: 150 },
+            { name: 'pear', calories: 57, protein: 0.4, carbs: 15, fat: 0.1, gramsPerUnit: 178 },
+            { name: 'kiwi', calories: 61, protein: 1.1, carbs: 15, fat: 0.5, gramsPerUnit: 76 },
+            { name: 'lemon', calories: 29, protein: 1.1, carbs: 9, fat: 0.3, gramsPerUnit: 58 },
+            { name: 'lime', calories: 30, protein: 0.7, carbs: 11, fat: 0.2, gramsPerUnit: 44 },
             { name: 'coconut', calories: 354, protein: 3.3, carbs: 15, fat: 33 },
-            { name: 'dates', calories: 282, protein: 2.5, carbs: 75, fat: 0.4 },
-            { name: 'fig', calories: 74, protein: 0.8, carbs: 19, fat: 0.3 },
+            { name: 'dates', calories: 282, protein: 2.5, carbs: 75, fat: 0.4, gramsPerUnit: 8 },
+            { name: 'fig', calories: 74, protein: 0.8, carbs: 19, fat: 0.3, gramsPerUnit: 50 },
             { name: 'broccoli', calories: 34, protein: 2.8, carbs: 7, fat: 0.4 },
-            { name: 'carrot', calories: 41, protein: 0.9, carbs: 10, fat: 0.2 },
+            { name: 'carrot', calories: 41, protein: 0.9, carbs: 10, fat: 0.2, gramsPerUnit: 72 },
             { name: 'spinach', calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4 },
             { name: 'kale', calories: 49, protein: 4.3, carbs: 9, fat: 0.9 },
             { name: 'lettuce', calories: 15, protein: 1.4, carbs: 2.9, fat: 0.2 },
-            { name: 'cucumber', calories: 15, protein: 0.7, carbs: 3.6, fat: 0.1 },
-            { name: 'tomato', calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2 },
-            { name: 'potato', calories: 77, protein: 2.0, carbs: 17, fat: 0.1 },
-            { name: 'sweet potato', calories: 86, protein: 1.6, carbs: 20, fat: 0.1 },
-            { name: 'onion', calories: 40, protein: 1.1, carbs: 9, fat: 0.1 },
-            { name: 'garlic', calories: 149, protein: 6.4, carbs: 33, fat: 0.5 },
+            { name: 'cucumber', calories: 15, protein: 0.7, carbs: 3.6, fat: 0.1, gramsPerUnit: 300 },
+            { name: 'tomato', calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, gramsPerUnit: 123 },
+            { name: 'potato', calories: 77, protein: 2.0, carbs: 17, fat: 0.1, gramsPerUnit: 150 },
+            { name: 'sweet potato', calories: 86, protein: 1.6, carbs: 20, fat: 0.1, gramsPerUnit: 130 },
+            { name: 'onion', calories: 40, protein: 1.1, carbs: 9, fat: 0.1, gramsPerUnit: 110 },
+            { name: 'garlic', calories: 149, protein: 6.4, carbs: 33, fat: 0.5, gramsPerUnit: 3 },
             { name: 'ginger', calories: 80, protein: 1.8, carbs: 18, fat: 0.8 },
             { name: 'cauliflower', calories: 25, protein: 1.9, carbs: 5, fat: 0.3 },
             { name: 'cabbage', calories: 25, protein: 1.3, carbs: 6, fat: 0.1 },
-            { name: 'capsicum', calories: 31, protein: 1.0, carbs: 6, fat: 0.3 },
-            { name: 'mushroom', calories: 22, protein: 3.1, carbs: 3.3, fat: 0.3 },
-            { name: 'corn', calories: 86, protein: 3.2, carbs: 19, fat: 1.2 },
+            { name: 'capsicum', calories: 31, protein: 1.0, carbs: 6, fat: 0.3, gramsPerUnit: 120 },
+            { name: 'mushroom', calories: 22, protein: 3.1, carbs: 3.3, fat: 0.3, gramsPerUnit: 18 },
+            { name: 'corn', calories: 86, protein: 3.2, carbs: 19, fat: 1.2, gramsPerUnit: 90 },
             { name: 'peas', calories: 81, protein: 5.4, carbs: 14, fat: 0.4 },
             { name: 'green beans', calories: 31, protein: 1.8, carbs: 7, fat: 0.1 },
             { name: 'rice', calories: 130, protein: 2.7, carbs: 28, fat: 0.3 },
@@ -4846,17 +4917,17 @@
             { name: 'tandoori chicken', calories: 212, protein: 29, carbs: 3, fat: 9 },
             { name: 'biryani', calories: 200, protein: 8, carbs: 28, fat: 7 },
             { name: 'pulao', calories: 180, protein: 5, carbs: 32, fat: 4 },
-            { name: 'dosa', calories: 133, protein: 4, carbs: 26, fat: 2 },
-            { name: 'idli', calories: 80, protein: 3, carbs: 16, fat: 0.5 },
-            { name: 'vada', calories: 180, protein: 5, carbs: 20, fat: 9 },
+            { name: 'dosa', calories: 133, protein: 4, carbs: 26, fat: 2, gramsPerUnit: 100 },
+            { name: 'idli', calories: 80, protein: 3, carbs: 16, fat: 0.5, gramsPerUnit: 40 },
+            { name: 'vada', calories: 180, protein: 5, carbs: 20, fat: 9, gramsPerUnit: 50 },
             { name: 'sambar', calories: 60, protein: 3, carbs: 10, fat: 1 },
             { name: 'rasam', calories: 30, protein: 1, carbs: 6, fat: 0.5 },
             { name: 'dal', calories: 100, protein: 6, carbs: 16, fat: 1.5 },
             { name: 'dal tadka', calories: 120, protein: 7, carbs: 16, fat: 3 },
-            { name: 'roti', calories: 120, protein: 4, carbs: 25, fat: 1 },
-            { name: 'naan', calories: 200, protein: 6, carbs: 38, fat: 3 },
-            { name: 'paratha', calories: 250, protein: 6, carbs: 35, fat: 10 },
-            { name: 'puri', calories: 260, protein: 5, carbs: 35, fat: 12 },
+            { name: 'roti', calories: 120, protein: 4, carbs: 25, fat: 1, gramsPerUnit: 40 },
+            { name: 'naan', calories: 200, protein: 6, carbs: 38, fat: 3, gramsPerUnit: 90 },
+            { name: 'paratha', calories: 250, protein: 6, carbs: 35, fat: 10, gramsPerUnit: 80 },
+            { name: 'puri', calories: 260, protein: 5, carbs: 35, fat: 12, gramsPerUnit: 30 },
             { name: 'chole', calories: 150, protein: 8, carbs: 22, fat: 4 },
             { name: 'rajma', calories: 150, protein: 9, carbs: 22, fat: 3 },
             { name: 'palak paneer', calories: 220, protein: 14, carbs: 8, fat: 16 },
@@ -4868,30 +4939,30 @@
             { name: 'yogurt', calories: 59, protein: 10, carbs: 4, fat: 0.4 },
             { name: 'curd', calories: 60, protein: 11, carbs: 4, fat: 0.5 },
             { name: 'cheese', calories: 404, protein: 25, carbs: 1.3, fat: 33 },
-            { name: 'egg', calories: 155, protein: 13, carbs: 1.1, fat: 11 },
-            { name: 'egg white', calories: 52, protein: 11, carbs: 0.7, fat: 0.2 },
+            { name: 'egg', calories: 155, protein: 13, carbs: 1.1, fat: 11, gramsPerUnit: 50 },
+            { name: 'egg white', calories: 52, protein: 11, carbs: 0.7, fat: 0.2, gramsPerUnit: 33 },
             { name: 'chicken', calories: 239, protein: 27.3, carbs: 0, fat: 14 },
-            { name: 'chicken breast', calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+            { name: 'chicken breast', calories: 165, protein: 31, carbs: 0, fat: 3.6, gramsPerUnit: 174 },
             { name: 'beef', calories: 250, protein: 26, carbs: 0, fat: 16 },
             { name: 'pork', calories: 242, protein: 27, carbs: 0, fat: 14 },
             { name: 'fish', calories: 206, protein: 22, carbs: 0, fat: 12 },
             { name: 'salmon', calories: 208, protein: 22, carbs: 0, fat: 13 },
             { name: 'tuna', calories: 132, protein: 28, carbs: 0, fat: 1.3 },
-            { name: 'shrimp', calories: 99, protein: 24, carbs: 0.2, fat: 0.3 },
-            { name: 'samosa', calories: 262, protein: 5, carbs: 30, fat: 14 },
-            { name: 'pakora', calories: 200, protein: 5, carbs: 20, fat: 12 },
-            { name: 'jalebi', calories: 200, protein: 2, carbs: 40, fat: 5 },
-            { name: 'gulab jamun', calories: 150, protein: 2, carbs: 30, fat: 3 },
-            { name: 'ladoo', calories: 180, protein: 3, carbs: 25, fat: 8 },
-            { name: 'barfi', calories: 220, protein: 5, carbs: 25, fat: 12 },
+            { name: 'shrimp', calories: 99, protein: 24, carbs: 0.2, fat: 0.3, gramsPerUnit: 6 },
+            { name: 'samosa', calories: 262, protein: 5, carbs: 30, fat: 14, gramsPerUnit: 80 },
+            { name: 'pakora', calories: 200, protein: 5, carbs: 20, fat: 12, gramsPerUnit: 25 },
+            { name: 'jalebi', calories: 200, protein: 2, carbs: 40, fat: 5, gramsPerUnit: 30 },
+            { name: 'gulab jamun', calories: 150, protein: 2, carbs: 30, fat: 3, gramsPerUnit: 25 },
+            { name: 'ladoo', calories: 180, protein: 3, carbs: 25, fat: 8, gramsPerUnit: 30 },
+            { name: 'barfi', calories: 220, protein: 5, carbs: 25, fat: 12, gramsPerUnit: 25 },
             { name: 'kheer', calories: 140, protein: 5, carbs: 20, fat: 5 },
             { name: 'halwa', calories: 250, protein: 4, carbs: 35, fat: 11 },
             { name: 'peanut butter', calories: 588, protein: 25, carbs: 20, fat: 50 },
-            { name: 'almonds', calories: 579, protein: 21.2, carbs: 22, fat: 49 },
-            { name: 'walnuts', calories: 654, protein: 15.2, carbs: 14, fat: 65 },
-            { name: 'cashew', calories: 553, protein: 18.2, carbs: 30, fat: 44 },
-            { name: 'pistachio', calories: 560, protein: 20, carbs: 28, fat: 45 },
-            { name: 'peanuts', calories: 567, protein: 25.8, carbs: 16, fat: 49 },
+            { name: 'almonds', calories: 579, protein: 21.2, carbs: 22, fat: 49, gramsPerUnit: 1.2 },
+            { name: 'walnuts', calories: 654, protein: 15.2, carbs: 14, fat: 65, gramsPerUnit: 4 },
+            { name: 'cashew', calories: 553, protein: 18.2, carbs: 30, fat: 44, gramsPerUnit: 1.5 },
+            { name: 'pistachio', calories: 560, protein: 20, carbs: 28, fat: 45, gramsPerUnit: 0.6 },
+            { name: 'peanuts', calories: 567, protein: 25.8, carbs: 16, fat: 49, gramsPerUnit: 0.9 },
             { name: 'sunflower seeds', calories: 584, protein: 20.8, carbs: 20, fat: 51 },
             { name: 'pumpkin seeds', calories: 559, protein: 30.2, carbs: 11, fat: 49 },
             { name: 'chia seeds', calories: 486, protein: 16.5, carbs: 42, fat: 31 },
@@ -4899,8 +4970,8 @@
             { name: 'coconut oil', calories: 884, protein: 0, carbs: 0, fat: 100 },
             { name: 'mustard oil', calories: 884, protein: 0, carbs: 0, fat: 100 },
             { name: 'sunflower oil', calories: 884, protein: 0, carbs: 0, fat: 100 },
-            { name: 'bread', calories: 265, protein: 9, carbs: 49, fat: 3.2 },
-            { name: 'brown bread', calories: 250, protein: 10, carbs: 45, fat: 3 },
+            { name: 'bread', calories: 265, protein: 9, carbs: 49, fat: 3.2, gramsPerUnit: 30 },
+            { name: 'brown bread', calories: 250, protein: 10, carbs: 45, fat: 3, gramsPerUnit: 30 },
             { name: 'pasta', calories: 131, protein: 5, carbs: 25, fat: 0.5 },
             { name: 'noodles', calories: 138, protein: 4.5, carbs: 26, fat: 2 },
             { name: 'sugar', calories: 387, protein: 0, carbs: 100, fat: 0 },
@@ -4908,9 +4979,9 @@
             { name: 'jaggery', calories: 383, protein: 0.4, carbs: 95, fat: 0.1 },
             { name: 'dark chocolate', calories: 546, protein: 4.9, carbs: 46, fat: 38 },
             { name: 'milk chocolate', calories: 546, protein: 4.9, carbs: 46, fat: 38 },
-            { name: 'pizza', calories: 266, protein: 11, carbs: 33, fat: 10 },
-            { name: 'burger', calories: 295, protein: 17, carbs: 30, fat: 12 },
-            { name: 'sandwich', calories: 250, protein: 12, carbs: 35, fat: 8 },
+            { name: 'pizza', calories: 266, protein: 11, carbs: 33, fat: 10, gramsPerUnit: 107 },
+            { name: 'burger', calories: 295, protein: 17, carbs: 30, fat: 12, gramsPerUnit: 200 },
+            { name: 'sandwich', calories: 250, protein: 12, carbs: 35, fat: 8, gramsPerUnit: 150 },
             { name: 'smoothie', calories: 130, protein: 3, carbs: 25, fat: 2 },
             { name: 'juice', calories: 110, protein: 0.5, carbs: 26, fat: 0.2 },
             { name: 'soda', calories: 150, protein: 0, carbs: 39, fat: 0 },
@@ -4943,7 +5014,7 @@
                 'kg') return q * 1000; const k = { unit: 'gramsPerUnit', ml: 'gramsPerMl', cup: 'gramsPerCup', tbsp: 'gramsPerTbsp',
                 tsp: 'gramsPerTsp' } [u]; const n = f?.[k]; return Number.isFinite(n) ? q * n : null }
 
-        function foodCalc(f, q, u) { if (!f || !f.available) return null; const g = gramsFor(q, u, f); if (g === null)
+        function foodCalc(f, q, u) { if (!f) return null; if (!f.available && u !== 'g' && u !== 'kg') return null; const g = gramsFor(q, u, f); if (g === null)
                 return null; const z = g / 100,
                 o = {}; for (const k of ['calories', 'protein', 'carbs', 'fat']) { if (!Number.isFinite(f[k])) return null;
                 o[k] = f[k] * z } return o }
@@ -4954,17 +5025,37 @@
 
         function unit() { return document.getElementById('food-serving-unit').value }
 
+        function updateUnitDropdown(f) {
+            const sel = document.getElementById('food-serving-unit');
+            const pieceOpt = sel.querySelector('option[value="unit"]');
+            if (f && Number.isFinite(f.gramsPerUnit)) {
+                pieceOpt.style.display = '';
+                pieceOpt.textContent = `piece (~${f.gramsPerUnit}g)`;
+                sel.value = 'unit';
+                document.getElementById('food-serving-size').value = '1';
+            } else {
+                pieceOpt.style.display = 'none';
+                sel.value = 'g';
+                document.getElementById('food-serving-size').value = '100';
+            }
+        }
+
         function showFoodResult(f) { foodResult.style.display = 'flex';
             currentFood = f || null; if (!f) { foodName.textContent = 'Not found';
                 foodCal.textContent = foodProtein.textContent = foodCarbs.textContent = foodFat.textContent = 'N/A';
                 foodServingLabel.textContent = 'No database match'; return }
+            updateUnitDropdown(f);
             updateFoodPreview() }
 
         function updateFoodPreview() { if (!currentFood) return; const c = foodCalc(currentFood, qty(), unit());
             foodName.textContent = currentFood.name;
-            foodServingLabel.textContent = `Reference: per 100 g · Entered: ${qty()||0} ${unit()}`; for (const [el, k,
-                    d
-                ] of [
+            const u = unit();
+            if (u === 'unit' && currentFood.gramsPerUnit) {
+                foodServingLabel.textContent = `${qty()||0} piece × ${currentFood.gramsPerUnit}g = ${rnd((qty()||0)*currentFood.gramsPerUnit,0)}g`;
+            } else {
+                foodServingLabel.textContent = `${qty()||0} ${u}`;
+            }
+            for (const [el, k, d] of [
                     [foodCal, 'calories', 0],
                     [foodProtein, 'protein', 1],
                     [foodCarbs, 'carbs', 1],
@@ -6022,35 +6113,151 @@
     </script>
     <script>
 (function () {
+    const API = "https://ceroviel-api.ceroviel.workers.dev";
     const authButton = document.getElementById("authButton");
 
-    if (!authButton) return;
-
-    const savedUser = localStorage.getItem("ceroviel_user");
-
-    if (savedUser) {
-        try {
-            const user = JSON.parse(savedUser);
-
-            authButton.title = `Logged in as ${user.username}`;
-            authButton.innerHTML = `<i class="fa-solid fa-user-check"></i>`;
-
-            authButton.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                const logout = confirm(
-                    `Logged in as ${user.username}\n\nDo you want to log out?`
-                );
-
-                if (logout) {
-                    localStorage.removeItem("ceroviel_user");
-                    location.reload();
-                }
-            });
-
-        } catch (error) {
-            localStorage.removeItem("ceroviel_user");
+    // ── Auth State ──
+    function updateAuthButton() {
+        if (!authButton) return;
+        const savedUser = localStorage.getItem("ceroviel_user");
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                authButton.title = `Logged in as ${user.username}`;
+                authButton.innerHTML = `<i class="fa-solid fa-user-check"></i>`;
+                authButton.onclick = function (e) {
+                    e.preventDefault();
+                    const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
+                    if (logout) {
+                        localStorage.removeItem("ceroviel_user");
+                        location.reload();
+                    }
+                };
+            } catch (error) {
+                localStorage.removeItem("ceroviel_user");
+            }
+        } else {
+            authButton.title = "Login";
+            authButton.innerHTML = `<i class="fa-solid fa-user"></i>`;
+            authButton.onclick = function () { navTo('login-view'); };
         }
+    }
+    updateAuthButton();
+
+    // ── Login Handler ──
+    const loginBtn = document.getElementById("loginBtn");
+    const loginMessage = document.getElementById("login-message");
+
+    if (loginBtn) {
+        loginBtn.addEventListener("click", async () => {
+            const username = document.getElementById("login-username").value.trim();
+            const password = document.getElementById("login-password").value;
+
+            if (!username || !password) {
+                loginMessage.textContent = "Enter username and password.";
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginMessage.textContent = "Logging in...";
+
+            try {
+                const response = await fetch(`${API}/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    loginMessage.style.color = "var(--success)";
+                    loginMessage.textContent = "Login successful!";
+                    localStorage.setItem("ceroviel_user", JSON.stringify(data.user));
+                    document.getElementById("login-username").value = "";
+                    document.getElementById("login-password").value = "";
+                    setTimeout(() => {
+                        loginMessage.textContent = "";
+                        loginMessage.style.color = "";
+                        updateAuthButton();
+                        navTo('home-view');
+                        if (typeof showToast === 'function') showToast(`Welcome back, ${data.user.username}!`, 'success');
+                    }, 500);
+                } else {
+                    loginMessage.style.color = "var(--danger)";
+                    loginMessage.textContent = data.message || "Login failed.";
+                }
+            } catch (error) {
+                console.error(error);
+                loginMessage.style.color = "var(--danger)";
+                loginMessage.textContent = "Unable to connect to the server.";
+            }
+            loginBtn.disabled = false;
+        });
+    }
+
+    // ── Signup Handler ──
+    const signupBtn = document.getElementById("signupBtn");
+    const signupMessage = document.getElementById("signup-message");
+
+    if (signupBtn) {
+        signupBtn.addEventListener("click", async () => {
+            const username = document.getElementById("signup-username").value.trim();
+            const email = document.getElementById("signup-email").value.trim();
+            const password = document.getElementById("signup-password").value;
+            const confirmPassword = document.getElementById("signup-confirm").value;
+
+            if (!username || !email || !password || !confirmPassword) {
+                signupMessage.style.color = "var(--danger)";
+                signupMessage.textContent = "Fill in all fields.";
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                signupMessage.style.color = "var(--danger)";
+                signupMessage.textContent = "Please enter a valid email address.";
+                return;
+            }
+            if (password !== confirmPassword) {
+                signupMessage.style.color = "var(--danger)";
+                signupMessage.textContent = "Passwords do not match.";
+                return;
+            }
+
+            signupBtn.disabled = true;
+            signupMessage.textContent = "Creating account...";
+
+            try {
+                const response = await fetch(`${API}/signup`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    signupMessage.style.color = "var(--success)";
+                    signupMessage.textContent = "Account created! Redirecting to login...";
+                    document.getElementById("signup-username").value = "";
+                    document.getElementById("signup-email").value = "";
+                    document.getElementById("signup-password").value = "";
+                    document.getElementById("signup-confirm").value = "";
+                    setTimeout(() => {
+                        signupMessage.textContent = "";
+                        signupMessage.style.color = "";
+                        navTo('login-view');
+                        if (typeof showToast === 'function') showToast('Account created! Please log in.', 'success');
+                    }, 800);
+                } else {
+                    signupMessage.style.color = "var(--danger)";
+                    signupMessage.textContent = data.message || "Signup failed.";
+                }
+            } catch (error) {
+                console.error(error);
+                signupMessage.style.color = "var(--danger)";
+                signupMessage.textContent = "Unable to connect to the server.";
+            }
+            signupBtn.disabled = false;
+        });
     }
 })();
 </script>
