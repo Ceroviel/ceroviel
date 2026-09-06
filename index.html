@@ -30,6 +30,7 @@
             --surface-2: #121214;
             --surface-3: #1a1a1d;
             --primary: #38bdf8;
+            --primary-rgb: 56, 189, 248;
             --primary-soft: #7dd3fc;
             --accent: #38bdf8;
             --text: #f8fafc;
@@ -59,6 +60,215 @@
         [data-theme="system"] {
             /* will be handled by JS using prefers-color-scheme */
         }
+
+        /* ── FROSTED GLASS (iOS Control Center style) ── */
+
+        /* Dark mode frosted panels */
+        .frosted-glass .card,
+        .frosted-glass .contact-box,
+        .frosted-glass .check-item,
+        .frosted-glass .hero-card,
+        .frosted-glass .quote-card,
+        .frosted-glass .history-item,
+        .frosted-glass .modal-content {
+            background: rgba(var(--primary-rgb), 0.06) !important;
+            backdrop-filter: blur(40px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.13) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.15) !important;
+        }
+        /* Dark mode frosted inputs */
+        .frosted-glass input[type="text"],
+        .frosted-glass input[type="number"],
+        .frosted-glass input[type="password"],
+        .frosted-glass input[type="email"],
+        .frosted-glass textarea,
+        .frosted-glass select {
+            background: rgba(0, 0, 0, 0.25) !important;
+            backdrop-filter: blur(16px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Light mode frosted panels */
+        [data-theme="light"].frosted-glass .card,
+        [data-theme="light"].frosted-glass .contact-box,
+        [data-theme="light"].frosted-glass .check-item,
+        [data-theme="light"].frosted-glass .hero-card,
+        [data-theme="light"].frosted-glass .quote-card,
+        [data-theme="light"].frosted-glass .history-item,
+        [data-theme="light"].frosted-glass .modal-content {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(40px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.55) !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.6) !important;
+        }
+        /* Light mode frosted inputs */
+        [data-theme="light"].frosted-glass input[type="text"],
+        [data-theme="light"].frosted-glass input[type="number"],
+        [data-theme="light"].frosted-glass input[type="password"],
+        [data-theme="light"].frosted-glass input[type="email"],
+        [data-theme="light"].frosted-glass textarea,
+        [data-theme="light"].frosted-glass select {
+            background: rgba(255, 255, 255, 0.5) !important;
+            border: 0.5px solid rgba(0, 0, 0, 0.08) !important;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        /* Frosted sidebar */
+        .frosted-glass .sidebar {
+            background: rgba(var(--primary-rgb), 0.08) !important;
+            backdrop-filter: blur(50px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(50px) saturate(200%) !important;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4) !important;
+            border-left: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        [data-theme="light"].frosted-glass .sidebar {
+            background: rgba(255, 255, 255, 0.6) !important;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1) !important;
+            border-left: 0.5px solid rgba(255, 255, 255, 0.5) !important;
+        }
+
+        /* Frosted bottom nav */
+        .frosted-glass .bottom-nav {
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(40px) saturate(200%) !important;
+            -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        [data-theme="light"].frosted-glass .bottom-nav {
+            background: rgba(255, 255, 255, 0.45) !important;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.4) !important;
+        }
+
+        /* Frosted buttons – iOS glass pill */
+        .frosted-glass .btn {
+            background: rgba(var(--primary-rgb), 0.12) !important;
+            backdrop-filter: blur(16px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+            color: var(--text) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.12) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px;
+        }
+        .frosted-glass .btn:hover {
+            background: rgba(var(--primary-rgb), 0.2) !important;
+        }
+        .frosted-glass .btn.active {
+            background: rgba(var(--primary-rgb), 0.4) !important;
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 2px 12px rgba(var(--primary-rgb), 0.3),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.2) !important;
+        }
+        /* Light frosted buttons */
+        [data-theme="light"].frosted-glass .btn {
+            background: rgba(255, 255, 255, 0.5) !important;
+            color: var(--text) !important;
+            border: 0.5px solid rgba(0, 0, 0, 0.06) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.6) !important;
+        }
+        [data-theme="light"].frosted-glass .btn:hover {
+            background: rgba(255, 255, 255, 0.65) !important;
+        }
+        [data-theme="light"].frosted-glass .btn.active {
+            background: rgba(var(--primary-rgb), 0.2) !important;
+            color: var(--text) !important;
+            border-color: rgba(var(--primary-rgb), 0.3) !important;
+        }
+
+        /* Frosted header icons */
+        .frosted-glass .header-icon {
+            background: rgba(var(--primary-rgb), 0.1) !important;
+            backdrop-filter: blur(16px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+        [data-theme="light"].frosted-glass .header-icon {
+            background: rgba(255, 255, 255, 0.5) !important;
+            border: 0.5px solid rgba(0, 0, 0, 0.06) !important;
+        }
+
+        /* Frosted login/signup button → true rectangle */
+        .frosted-glass #loginBtn,
+        .frosted-glass #signupBtn {
+            border-radius: 6px !important;
+            background: rgba(var(--primary-rgb), 0.3) !important;
+            color: #fff !important;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 0.5px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.25),
+                        inset 0 0.5px 0 rgba(255, 255, 255, 0.15) !important;
+        }
+        [data-theme="light"].frosted-glass #loginBtn,
+        [data-theme="light"].frosted-glass #signupBtn {
+            background: rgba(var(--primary-rgb), 0.25) !important;
+            border: 0.5px solid rgba(var(--primary-rgb), 0.3) !important;
+            color: var(--text) !important;
+        }
+
+        /* ── FROSTED GLASS TOGGLE SWITCH ── */
+        .frost-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        .frost-toggle-row span {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        .frost-switch {
+            position: relative;
+            width: 52px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+        .frost-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .frost-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--surface-3);
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid var(--line);
+        }
+        .frost-slider:before {
+            content: "";
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .frost-switch input:checked + .frost-slider {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        .frost-switch input:checked + .frost-slider:before {
+            transform: translateX(22px);
+            background: #fff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -67,12 +277,12 @@
             -webkit-tap-highlight-color: transparent;
         }
         body {
-            background: radial-gradient(circle at 90% 0%, var(--line), transparent 30%), var(--bg);
+            background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             padding-bottom: 92px;
             overflow-x: hidden;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.4s, color 0.3s;
         }
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -863,7 +1073,7 @@
             padding: 22px;
             min-height: 205px;
             background: radial-gradient(circle at 88% 8%, var(--line), transparent 35%),
-                linear-gradient(135deg, #0d121c, #000 65%);
+                linear-gradient(135deg, var(--surface-2), var(--surface) 65%);
         }
         .hero-card:after {
             content: "";
@@ -2163,6 +2373,16 @@
             </div>
         </div>
         <div class="contact-box">
+            <h3><i class="fa-solid fa-snowflake" style="margin-right:6px;"></i>Frosted Glass</h3>
+            <div class="frost-toggle-row">
+                <span>iOS Glass Effect</span>
+                <label class="frost-switch">
+                    <input type="checkbox" id="frostToggle" onchange="toggleFrostedGlass(this.checked)">
+                    <span class="frost-slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="contact-box">
             <h3>Contact Us</h3>
             <div class="contact-item"><i class="fa-solid fa-envelope"></i> ceroviel@gmail.com</div>
             <div class="contact-item"><i class="fa-brands fa-instagram"></i> @ceroviel</div>
@@ -2192,11 +2412,7 @@
                     <span class="logo-text">Ceroviel</span>
                 </a>
                 <div class="header-actions">
-                    <div class="theme-toggle" id="themeToggle">
-                        <button class="btn btn-sm active" data-theme="dark" onclick="setThemeMode('dark')"><i class="fa-solid fa-moon"></i></button>
-                        <button class="btn btn-sm" data-theme="light" onclick="setThemeMode('light')"><i class="fa-solid fa-sun"></i></button>
-                        <button class="btn btn-sm" data-theme="system" onclick="setThemeMode('system')"><i class="fa-solid fa-desktop"></i></button>
-                    </div><div class="header-icon" id="authButton" title="Login" onclick="navTo('login-view')" style="cursor:pointer;">
+                    <div class="header-icon" id="authButton" title="Login" onclick="navTo('login-view')" style="cursor:pointer;">
     <i class="fa-solid fa-user"></i>
 </div>
                     <div class="header-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
@@ -2850,7 +3066,7 @@
                 <h2 style="text-align:center;"><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
                 <input id="login-username" type="text" placeholder="Username" autocomplete="username">
                 <input id="login-password" type="password" placeholder="Password" autocomplete="current-password">
-                <button class="btn" id="loginBtn">Login</button>
+                <button class="btn" id="loginBtn" style="border-radius:6px;padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Login</button>
                 <div id="login-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
                 <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
                     Don't have an account?
@@ -2868,7 +3084,7 @@
                 <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
                 <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
                 <input id="signup-confirm" type="password" placeholder="Confirm Password" autocomplete="new-password">
-                <button class="btn" id="signupBtn">Sign Up</button>
+                <button class="btn" id="signupBtn" style="border-radius:6px;padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Sign Up</button>
                 <div id="signup-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
                 <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
                     Already have an account?
@@ -2954,14 +3170,62 @@
         }
 
         function setThemeColor(primary, soft) {
+            const rgb = hexToRgb(primary);
             document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--primary-rgb', `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`);
             document.documentElement.style.setProperty('--accent', primary);
             document.documentElement.style.setProperty('--primary-soft', soft);
             document.documentElement.style.setProperty('--line', primary + '26');
             document.documentElement.style.setProperty('--logo-color', primary);
             localStorage.setItem('app_theme_primary', primary);
             localStorage.setItem('app_theme_soft', soft);
+            updateMixedBackground();
             buildThemeUI();
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const num = parseInt(hex, 16);
+            return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+        }
+
+        function mixColors(rgb1, rgb2, ratio) {
+            return rgb1.map((c, i) => Math.round(c * ratio + rgb2[i] * (1 - ratio)));
+        }
+
+        function updateMixedBackground() {
+            const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#38bdf8';
+            const mode = localStorage.getItem('ff-theme-mode') || 'dark';
+            const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            const themeRgb = hexToRgb(primary);
+            const r = themeRgb[0], g = themeRgb[1], b = themeRgb[2];
+
+            if (isDark) {
+                // Dark: black base with theme color band at center
+                document.body.style.background = `
+                    linear-gradient(180deg,
+                        #000 0%,
+                        rgba(${r}, ${g}, ${b}, 0.06) 15%,
+                        rgba(${r}, ${g}, ${b}, 0.14) 35%,
+                        rgba(${r}, ${g}, ${b}, 0.18) 50%,
+                        rgba(${r}, ${g}, ${b}, 0.14) 65%,
+                        rgba(${r}, ${g}, ${b}, 0.06) 85%,
+                        #000 100%
+                    ) fixed`;
+            } else {
+                // Light: light base with soft theme color band
+                document.body.style.background = `
+                    linear-gradient(180deg,
+                        #f5f5fa 0%,
+                        rgba(${r}, ${g}, ${b}, 0.06) 15%,
+                        rgba(${r}, ${g}, ${b}, 0.1) 35%,
+                        rgba(${r}, ${g}, ${b}, 0.13) 50%,
+                        rgba(${r}, ${g}, ${b}, 0.1) 65%,
+                        rgba(${r}, ${g}, ${b}, 0.06) 85%,
+                        #f5f5fa 100%
+                    ) fixed`;
+            }
         }
 
         function updateLogoColor() {
@@ -2982,10 +3246,31 @@
                 document.documentElement.style.colorScheme = mode;
             }
             localStorage.setItem('ff-theme-mode', mode);
-            document.querySelectorAll('#themeToggle .btn, .contact-box .btn[data-theme]').forEach(b => {
+            // Update active state on sidebar mode buttons
+            document.querySelectorAll('.contact-box .btn[data-theme]').forEach(b => {
                 b.classList.toggle('active', b.dataset.theme === mode);
             });
+            updateMixedBackground();
             updateLogoColor();
+        }
+
+        // ── Frosted Glass Toggle ──
+        function toggleFrostedGlass(enabled) {
+            if (enabled) {
+                document.documentElement.classList.add('frosted-glass');
+            } else {
+                document.documentElement.classList.remove('frosted-glass');
+            }
+            localStorage.setItem('ff-frosted-glass', enabled ? 'on' : 'off');
+        }
+
+        function loadFrostedGlass() {
+            const saved = localStorage.getItem('ff-frosted-glass');
+            const toggle = document.getElementById('frostToggle');
+            if (saved === 'on') {
+                document.documentElement.classList.add('frosted-glass');
+                if (toggle) toggle.checked = true;
+            }
         }
 
         function loadTheme() {
@@ -2994,6 +3279,7 @@
             if (p && s) setThemeColor(p, s);
             const mode = localStorage.getItem('ff-theme-mode') || 'dark';
             setThemeMode(mode);
+            loadFrostedGlass();
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -6124,7 +6410,8 @@
             try {
                 const user = JSON.parse(savedUser);
                 authButton.title = `Logged in as ${user.username}`;
-                authButton.innerHTML = `<i class="fa-solid fa-user-check"></i>`;
+                authButton.innerHTML = `<i class="fa-solid fa-user"></i>`;
+                authButton.style.cssText = 'cursor:pointer;';
                 authButton.onclick = function (e) {
                     e.preventDefault();
                     const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
@@ -6138,7 +6425,8 @@
             }
         } else {
             authButton.title = "Login";
-            authButton.innerHTML = `<i class="fa-solid fa-user"></i>`;
+            authButton.innerHTML = `Login`;
+            authButton.style.cssText = 'cursor:pointer;font-size:0.85rem;font-weight:600;letter-spacing:0.02em;';
             authButton.onclick = function () { navTo('login-view'); };
         }
     }
