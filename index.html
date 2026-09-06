@@ -490,15 +490,16 @@
         /* ── BUTTONS ── */
         .btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-soft));
-            color: #000;
+            background: linear-gradient(135deg, #ffffff 0%, #1a1a1d 100%);
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
             font-weight: bold;
-            border: none;
+            border: 1px solid #444;
             padding: 0.9rem;
             border-radius: 15px;
             cursor: pointer;
             transition: opacity 0.2s, transform 0.15s, background 0.3s;
-            box-shadow: 0 10px 25px var(--line);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         .btn:hover {
             opacity: 0.9;
@@ -3156,9 +3157,10 @@
             if (!grid) return;
             grid.innerHTML = '';
             const currentP = localStorage.getItem('app_theme_primary') || '#38bdf8';
+            const currentS = localStorage.getItem('app_theme_soft') || '#7dd3fc';
             THEMES.forEach(t => {
                 const div = document.createElement('div');
-                div.className = 'theme-preview' + (t.primary === currentP ? ' active-theme' : '');
+                div.className = 'theme-preview' + (t.primary === currentP && t.soft === currentS ? ' active-theme' : '');
                 div.style.background = `linear-gradient(135deg, ${t.primary}, ${t.soft})`;
                 div.innerHTML = `<span class="check-mark"><i class="fa-solid fa-check"></i></span>`;
                 div.title = t.name;
@@ -3196,35 +3198,30 @@
 
         function updateMixedBackground() {
             const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#38bdf8';
+            const soft = getComputedStyle(document.documentElement).getPropertyValue('--primary-soft').trim() || '#7dd3fc';
             const mode = localStorage.getItem('ff-theme-mode') || 'dark';
             const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            const themeRgb = hexToRgb(primary);
-            const r = themeRgb[0], g = themeRgb[1], b = themeRgb[2];
+            const pRgb = hexToRgb(primary);
+            const sRgb = hexToRgb(soft);
 
             if (isDark) {
-                // Dark: black base with theme color band at center
                 document.body.style.background = `
-                    linear-gradient(180deg,
-                        #000 0%,
-                        rgba(${r}, ${g}, ${b}, 0.06) 15%,
-                        rgba(${r}, ${g}, ${b}, 0.14) 35%,
-                        rgba(${r}, ${g}, ${b}, 0.18) 50%,
-                        rgba(${r}, ${g}, ${b}, 0.14) 65%,
-                        rgba(${r}, ${g}, ${b}, 0.06) 85%,
-                        #000 100%
+                    linear-gradient(135deg,
+                        rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, 0.25) 0%,
+                        #000 40%,
+                        #000 60%,
+                        rgba(${sRgb[0]}, ${sRgb[1]}, ${sRgb[2]}, 0.25) 100%
                     ) fixed`;
+                document.body.style.backgroundColor = '#000';
             } else {
-                // Light: light base with soft theme color band
                 document.body.style.background = `
-                    linear-gradient(180deg,
-                        #f5f5fa 0%,
-                        rgba(${r}, ${g}, ${b}, 0.06) 15%,
-                        rgba(${r}, ${g}, ${b}, 0.1) 35%,
-                        rgba(${r}, ${g}, ${b}, 0.13) 50%,
-                        rgba(${r}, ${g}, ${b}, 0.1) 65%,
-                        rgba(${r}, ${g}, ${b}, 0.06) 85%,
-                        #f5f5fa 100%
+                    linear-gradient(135deg,
+                        rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, 0.2) 0%,
+                        #f5f5fa 40%,
+                        #f5f5fa 60%,
+                        rgba(${sRgb[0]}, ${sRgb[1]}, ${sRgb[2]}, 0.2) 100%
                     ) fixed`;
+                document.body.style.backgroundColor = '#f5f5fa';
             }
         }
 
@@ -6524,7 +6521,9 @@
 
                 if (data.success) {
                     signupMessage.style.color = "var(--success)";
-                    signupMessage.textContent = "Account created! Redirecting to login...";
+                    signupMessage.textContent = "Account created! Redirecting to home...";
+                    // Auto-login
+                    localStorage.setItem("ceroviel_user", JSON.stringify({ username: username }));
                     document.getElementById("signup-username").value = "";
                     document.getElementById("signup-email").value = "";
                     document.getElementById("signup-password").value = "";
@@ -6532,9 +6531,10 @@
                     setTimeout(() => {
                         signupMessage.textContent = "";
                         signupMessage.style.color = "";
-                        navTo('login-view');
-                        if (typeof showToast === 'function') showToast('Account created! Please log in.', 'success');
-                    }, 800);
+                        updateAuthButton();
+                        navTo('home-view');
+                        if (typeof showToast === 'function') showToast(`Welcome, ${username}!`, 'success');
+                    }, 500);
                 } else {
                     signupMessage.style.color = "var(--danger)";
                     signupMessage.textContent = data.message || "Signup failed.";
