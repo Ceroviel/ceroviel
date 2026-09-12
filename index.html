@@ -2650,7 +2650,10 @@
         <div id="home-view" class="view-section active">
             <div class="app-header">
                 <a class="brand" href="#home-view" onclick="navTo('home-view',null);return false;">
-                    <img src="logo.png" alt="Logo" style="max-height: 44px; width: auto; object-fit: contain; display: block;" />
+                    <svg class="ceroviel-brand-logo" viewBox="0 0 100 100" style="max-height: 44px; width: 44px; display: block; vertical-align: middle;">
+                        <path d="M 68 28 A 38 38 0 1 0 72 73 L 58 71 A 24 24 0 1 1 54 26 Z" fill="var(--text)" />
+                        <polygon points="56,71 78,70 82,47" fill="var(--primary)" />
+                    </svg>
                     <span class="logo-text">Ceroviel</span>
                 </a>
                 <div class="header-actions">
@@ -7639,6 +7642,9 @@
             
             if (path.endsWith('/uadmin') || hash === 'uadmin' || hash === 'uadmin-view') {
                 switchView('uadmin-view', null, false);
+                if (sessionStorage.getItem('ceroviel_admin') === 'true' && typeof window.adminUnlock === 'function') {
+                    setTimeout(() => window.adminUnlock(), 50);
+                }
             } else if (hash && document.getElementById(hash)) {
                 switchView(hash, null, false);
             } else if (hash && document.getElementById(hash + '-view')) {
@@ -7673,6 +7679,8 @@
     const authButton = document.getElementById("authButton");
 
     // ── Auth State ──
+    let sessionCheckInterval;
+    
     function updateAuthButton() {
         if (!authButton) return;
         const savedUser = localStorage.getItem("ceroviel_user");
@@ -7689,6 +7697,7 @@
                     const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
                     if (logout) {
                         localStorage.removeItem("ceroviel_user");
+                        clearInterval(sessionCheckInterval);
                         location.reload();
                     }
                 };
@@ -7701,9 +7710,30 @@
                         adminBtn.style.display = 'none';
                     }
                 }
+
+                // Periodic single-device check
+                if (user.sessionToken && typeof API !== 'undefined') {
+                    if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+                    sessionCheckInterval = setInterval(async () => {
+                        try {
+                            const resp = await fetch(`${API}/verify-session`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ username: user.username, token: user.sessionToken })
+                            });
+                            if (resp.status === 401 || resp.status === 403) {
+                                localStorage.removeItem("ceroviel_user");
+                                clearInterval(sessionCheckInterval);
+                                alert("You have been logged out because your account was logged into from another device.");
+                                location.reload();
+                            }
+                        } catch (e) { /* ignore network errors */ }
+                    }, 30000); // Check every 30 seconds
+                }
             } catch (error) {
                 localStorage.removeItem("ceroviel_user");
                 if (adminBtn) adminBtn.style.display = 'none';
+                if (sessionCheckInterval) clearInterval(sessionCheckInterval);
             }
         } else {
             authButton.title = "Login";
@@ -7711,6 +7741,7 @@
             authButton.style.cssText = 'cursor:pointer;font-size:0.85rem;font-weight:600;letter-spacing:0.02em;';
             authButton.onclick = function () { navTo('login-view'); };
             if (adminBtn) adminBtn.style.display = 'none';
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
         }
     }
     updateAuthButton();
@@ -7879,7 +7910,7 @@
         }
     };
 
-    window.submitSbOrder = function(type, ratePer1k) {
+    window.submitSbOrder = async function(type, ratePer1k) {
         const targetInput = document.getElementById(`sb-${type}-target`);
         const contactInput = document.getElementById(`sb-${type}-contact`);
         const qtyInput = document.getElementById(`sb-${type}-input`);
@@ -7905,6 +7936,18 @@
             status: 'Pending'
         };
         
+        // Sync to cloud API
+        if (typeof API !== 'undefined') {
+            try {
+                await fetch(`${API}/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(order)
+                });
+            } catch (e) { console.warn('Cloud sync failed', e); }
+        }
+        
+        // Local fallback
         let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
         orders.push(order);
         localStorage.setItem('ceroviel_sb_orders', JSON.stringify(orders));
@@ -7924,7 +7967,7 @@
     window.adminUnlock = function() {
         const pass = document.getElementById('admin-pass-input').value;
         const err = document.getElementById('admin-err');
-        if (pass === 'admin123' || sessionStorage.getItem('ceroviel_admin') === 'true') {
+        if (pass === '31082026' || sessionStorage.getItem('ceroviel_admin') === 'true') {
             sessionStorage.setItem('ceroviel_admin', 'true');
             document.getElementById('admin-lock-screen').style.display = 'none';
             document.getElementById('admin-dashboard').classList.add('unlocked');
@@ -7949,8 +7992,19 @@
         adminRender();
     };
 
-    window.adminRender = function() {
+    window.adminRender = async function() {
         if (sessionStorage.getItem('ceroviel_admin') !== 'true') return;
+        
+        // Fetch from cloud API
+        if (typeof API !== 'undefined') {
+            try {
+                const resp = await fetch(`${API}/orders`);
+                if (resp.ok) {
+                    const cloudOrders = await resp.json();
+                    localStorage.setItem('ceroviel_sb_orders', JSON.stringify(cloudOrders));
+                }
+            } catch (e) { console.warn('Could not fetch cloud orders', e); }
+        }
         
         let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
         
@@ -8020,7 +8074,17 @@
         });
     };
     
-    window.adminChangeStatus = function(id, newStatus) {
+    window.adminChangeStatus = async function(id, newStatus) {
+        if (typeof API !== 'undefined') {
+            try {
+                await fetch(`${API}/orders/${encodeURIComponent(id)}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+            } catch (e) { console.warn('API sync failed', e); }
+        }
+        
         let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
         const idx = orders.findIndex(o => o.id === id);
         if (idx !== -1) {
@@ -8031,8 +8095,15 @@
         }
     };
     
-    window.adminDelete = function(id) {
+    window.adminDelete = async function(id) {
         if (!confirm(`Delete order ${id}? This cannot be undone.`)) return;
+        
+        if (typeof API !== 'undefined') {
+            try {
+                await fetch(`${API}/orders/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            } catch (e) { console.warn('API sync failed', e); }
+        }
+        
         let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
         orders = orders.filter(o => o.id !== id);
         localStorage.setItem('ceroviel_sb_orders', JSON.stringify(orders));
