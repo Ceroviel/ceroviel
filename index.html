@@ -7697,7 +7697,8 @@
                     const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
                     if (logout) {
                         localStorage.removeItem("ceroviel_user");
-                        clearInterval(sessionCheckInterval);
+                        localStorage.removeItem("session_token");
+                        if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
                         location.reload();
                     }
                 };
@@ -7712,28 +7713,35 @@
                 }
 
                 // Periodic single-device check
-                if (user.sessionToken && typeof API !== 'undefined') {
-                    if (sessionCheckInterval) clearInterval(sessionCheckInterval);
-                    sessionCheckInterval = setInterval(async () => {
-                        try {
-                            const resp = await fetch(`${API}/verify-session`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ username: user.username, token: user.sessionToken })
-                            });
-                            if (resp.status === 401 || resp.status === 403) {
-                                localStorage.removeItem("ceroviel_user");
-                                clearInterval(sessionCheckInterval);
-                                alert("You have been logged out because your account was logged into from another device.");
-                                location.reload();
+                if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
+                window.sessionCheckInterval = setInterval(async () => {
+                    const token = localStorage.getItem("session_token");
+                    if (!token) return;
+
+                    try {
+                        const response = await fetch(`${API}/check-session`, {
+                            headers: {
+                                "Authorization": "Bearer " + token
                             }
-                        } catch (e) { /* ignore network errors */ }
-                    }, 30000); // Check every 30 seconds
-                }
+                        });
+
+                        if (response.status === 401) {
+                            localStorage.removeItem("session_token");
+                            localStorage.removeItem("ceroviel_user");
+                            if (window.sessionCheckInterval) clearInterval(window.sessionCheckInterval);
+                            alert("You have been logged out because your account was logged into from another device.");
+                            location.reload();
+                        }
+                    } catch (e) {
+                        console.error("Session check error", e);
+                    }
+                }, 30000); // Check every 30 seconds
+
             } catch (error) {
                 localStorage.removeItem("ceroviel_user");
+                localStorage.removeItem("session_token");
                 if (adminBtn) adminBtn.style.display = 'none';
-                if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+                if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
             }
         } else {
             authButton.title = "Login";
@@ -7775,6 +7783,9 @@
                     loginMessage.style.color = "var(--success)";
                     loginMessage.textContent = "Login successful!";
                     localStorage.setItem("ceroviel_user", JSON.stringify(data.user));
+                    if (data.session_token) {
+                        localStorage.setItem("session_token", data.session_token);
+                    }
                     document.getElementById("login-username").value = "";
                     document.getElementById("login-password").value = "";
                     setTimeout(() => {
