@@ -7692,10 +7692,19 @@
                 authButton.title = `Logged in as ${user.username}`;
                 authButton.innerHTML = `<i class="fa-solid fa-user"></i>`;
                 authButton.style.cssText = 'cursor:pointer;';
-                authButton.onclick = function (e) {
+                authButton.onclick = async function (e) {
                     e.preventDefault();
                     const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
                     if (logout) {
+                        const token = localStorage.getItem("session_token");
+                        if (token) {
+                            try {
+                                await fetch(`${API}/logout`, {
+                                    method: "POST",
+                                    headers: { "Authorization": "Bearer " + token }
+                                });
+                            } catch (e) { console.error("Logout API failed", e); }
+                        }
                         localStorage.removeItem("ceroviel_user");
                         localStorage.removeItem("session_token");
                         if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
