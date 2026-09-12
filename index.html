@@ -2594,6 +2594,77 @@
         .sb-tab-content.active {
             display: block;
         }
+        /* ── MODALS ── */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .modal-close {
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text); }
+        .modal-list-item {
+            padding: 12px 16px;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .modal-list-item:hover {
+            border-color: var(--primary);
+            background: var(--surface-3);
+        }
+        .modal-list-item.active {
+            background: rgba(var(--primary-rgb), 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
     </style>
 
 </head>
@@ -2614,16 +2685,37 @@
             </button>
         </div>
 
-        <div class="contact-box">
-            <h3>Theme Color</h3>
-            <div class="theme-grid" id="theme-grid"></div>
-        </div>
-        <div class="contact-box">
-            <h3>Theme Mode</h3>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
-                <button class="btn btn-sm" data-theme="dark" onclick="setThemeMode('dark')" style="width:auto;">Dark</button>
-                <button class="btn btn-sm" data-theme="light" onclick="setThemeMode('light')" style="width:auto;">Light</button>
-                <button class="btn btn-sm" data-theme="system" onclick="setThemeMode('system')" style="width:auto;">System</button>
+        <div class="contact-box" style="position: relative;">
+            <h3>Appearance</h3>
+            
+            <div style="margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Mode:</span>
+                    <span id="current-mode-display" style="color: var(--text); font-weight: 500; text-transform: capitalize;">Dark</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Color:</span>
+                    <span id="current-color-display" style="color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                        <span id="current-color-circle" style="width: 14px; height: 14px; border-radius: 50%; background: var(--primary);"></span>
+                        <span id="current-color-name">Default</span>
+                    </span>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-secondary" onclick="openThemeModeModal()" style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem;">
+                    Change Mode <span>▾</span>
+                </button>
+                
+                <button class="btn btn-secondary" onclick="openThemeColorModal()" style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem;">
+                    Change Accent Color <span>▾</span>
+                </button>
+            </div>
+            
+            <div id="sidebar-logout-container" style="margin-top: 20px; display: none;">
+                <button class="btn btn-danger" onclick="handleLogout()" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+                </button>
             </div>
         </div>
         <div class="contact-box">
@@ -4085,16 +4177,31 @@
 
     <!-- ─── SOCIALBOOSTER VIEW ─── -->
     <div id="social-booster-view" class="view-section">
-        <div class="card">
+        <div class="card" id="sb-platform-selection">
+            <h2 style="margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;">
+                SocialBooster
+            </h2>
+            <div style="display:flex; gap: 15px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="document.getElementById('sb-platform-selection').style.display='none'; document.getElementById('sb-instagram-page').style.display='block';" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;width:120px;border-radius:16px;">
+                    <i class="fa-brands fa-instagram" style="font-size: 2.5rem; color: #E1306C;"></i>
+                    <span style="font-weight:600;">Instagram</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="card" id="sb-instagram-page" style="display:none;">
+            <button class="btn btn-secondary" onclick="document.getElementById('sb-platform-selection').style.display='block'; document.getElementById('sb-instagram-page').style.display='none';" style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
             <h2 style="margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;">
                 <div class="sb-icon"><i class="fa-brands fa-instagram"></i></div>
-                SocialBooster
+                Instagram Booster
             </h2>
 
             <div class="sb-tabs">
                 <div class="sb-tab active" onclick="switchSbTab('followers')">Followers</div>
+                <div class="sb-tab" onclick="switchSbTab('likes')">Likes</div>
                 <div class="sb-tab" onclick="switchSbTab('views')">Views</div>
-                <div class="sb-tab" onclick="switchSbTab('shares')">Shares</div>
             </div>
 
             <!-- ── Followers Tab ── -->
@@ -4113,6 +4220,22 @@
                 </div>
             </div>
 
+            <!-- ── Likes Tab ── -->
+            <div id="sb-likes-tab" class="sb-tab-content">
+                <div class="sb-section-card">
+                    <h3><i class="fa-solid fa-heart"></i> Instagram Likes</h3>
+                    <div class="sb-rate"><i class="fa-solid fa-tag"></i> ₹100 per 1k</div>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;">Enter the post link and quantity.</p>
+                    <input type="text" id="sb-likes-target" placeholder="Instagram post/reel link" style="margin-bottom:8px;">
+                    <input type="text" id="sb-likes-contact" placeholder="WhatsApp number (optional)" style="margin-bottom:8px;">
+                    <div class="sb-input-row">
+                        <input type="number" id="sb-likes-input" placeholder="e.g. 500" oninput="calcSbPrice('likes', 100)">
+                    </div>
+                    <div class="sb-cost-display">Total Cost: <strong id="sb-likes-cost">₹0.00</strong></div>
+                    <button class="btn btn-accent" style="margin-top:12px;" onclick="submitSbOrder('likes', 100)">Place Order</button>
+                </div>
+            </div>
+
             <!-- ── Views Tab ── -->
             <div id="sb-views-tab" class="sb-tab-content">
                 <div class="sb-section-card">
@@ -4127,22 +4250,6 @@
                     <div class="sb-cost-display">Total Cost: <strong id="sb-views-cost">₹0.00</strong></div>
                     <div id="sb-views-warn" style="color:var(--danger);font-size:0.8rem;text-align:center;margin-top:8px;display:none;">Minimum order is ₹10</div>
                     <button class="btn btn-accent" id="sb-views-btn" style="margin-top:12px;" onclick="submitSbOrder('views', 0.30)">Place Order</button>
-                </div>
-            </div>
-
-            <!-- ── Shares Tab ── -->
-            <div id="sb-shares-tab" class="sb-tab-content">
-                <div class="sb-section-card">
-                    <h3><i class="fa-solid fa-share-nodes"></i> Instagram Shares</h3>
-                    <div class="sb-rate"><i class="fa-solid fa-tag"></i> ₹150 per 1k</div>
-                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;">Enter the post link and quantity.</p>
-                    <input type="text" id="sb-shares-target" placeholder="Instagram post/reel link" style="margin-bottom:8px;">
-                    <input type="text" id="sb-shares-contact" placeholder="WhatsApp number (optional)" style="margin-bottom:8px;">
-                    <div class="sb-input-row">
-                        <input type="number" id="sb-shares-input" placeholder="e.g. 500" oninput="calcSbPrice('shares', 150)">
-                    </div>
-                    <div class="sb-cost-display">Total Cost: <strong id="sb-shares-cost">₹0.00</strong></div>
-                    <button class="btn btn-accent" style="margin-top:12px;" onclick="submitSbOrder('shares', 150)">Place Order</button>
                 </div>
             </div>
         </div>
@@ -4421,26 +4528,47 @@
             { name: 'Blue→Green', primary: '#3b82f6', soft: '#22c55e' },
         ];
 
-        function buildThemeUI() {
-            const grid = document.getElementById('theme-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
+        window.buildThemeUI = function() {
+            const list = document.getElementById('theme-color-modal-list');
+            if (!list) return;
+            list.innerHTML = '';
             const currentP = localStorage.getItem('app_theme_primary') || '#38bdf8';
             const currentS = localStorage.getItem('app_theme_soft') || '#7dd3fc';
+            
+            let currentName = 'Default';
+
             THEMES.forEach(t => {
+                const isActive = (t.primary === currentP && t.soft === currentS);
+                if (isActive) currentName = t.name;
+                
                 const div = document.createElement('div');
-                div.className = 'theme-preview' + (t.primary === currentP && t.soft === currentS ? ' active-theme' : '');
-                div.style.background = `linear-gradient(135deg, ${t.primary}, ${t.soft})`;
-                div.innerHTML = `<span class="check-mark"><i class="fa-solid fa-check"></i></span>`;
-                div.title = t.name;
-                div.onclick = () => { setThemeColor(t.primary, t.soft);
-                    buildThemeUI(); };
-                grid.appendChild(div);
+                div.className = 'modal-list-item' + (isActive ? ' active' : '');
+                
+                div.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg, ${t.primary}, ${t.soft}); border: 1px solid var(--line);"></span>
+                        <span>${t.name}</span>
+                    </div>
+                    <i class="fa-solid fa-check checkmark" style="display:${isActive ? 'block' : 'none'};"></i>
+                `;
+                
+                div.onclick = () => { 
+                    setThemeColor(t.primary, t.soft);
+                    closeModals();
+                    buildThemeUI(); 
+                };
+                list.appendChild(div);
             });
+
+            const colorCircle = document.getElementById('current-color-circle');
+            const colorName = document.getElementById('current-color-name');
+            if (colorCircle) colorCircle.style.background = `linear-gradient(135deg, ${currentP}, ${currentS})`;
+            if (colorName) colorName.textContent = currentName;
+
             updateLogoColor();
         }
 
-        function setThemeColor(primary, soft) {
+        window.setThemeColor = function(primary, soft) {
             const rgb = hexToRgb(primary);
             document.documentElement.style.setProperty('--primary', primary);
             document.documentElement.style.setProperty('--primary-rgb', `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`);
@@ -4502,7 +4630,7 @@
             }
         }
 
-        function setThemeMode(mode) {
+        window.setThemeMode = function(mode) {
             if (mode === 'system') {
                 document.documentElement.removeAttribute('data-theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -4512,13 +4640,30 @@
                 document.documentElement.style.colorScheme = mode;
             }
             localStorage.setItem('ff-theme-mode', mode);
-            // Update active state on sidebar mode buttons
-            document.querySelectorAll('.contact-box .btn[data-theme]').forEach(b => {
-                b.classList.toggle('active', b.dataset.theme === mode);
+            
+            document.querySelectorAll('#theme-mode-modal .modal-list-item').forEach(el => {
+                const isMatch = el.id === 'mode-' + mode;
+                el.classList.toggle('active', isMatch);
+                const check = el.querySelector('.checkmark');
+                if (check) check.style.display = isMatch ? 'block' : 'none';
             });
+            
+            const modeDisplay = document.getElementById('current-mode-display');
+            if (modeDisplay) modeDisplay.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+            
             updateMixedBackground();
             updateLogoColor();
-        }
+        };
+
+        window.openThemeModeModal = function() {
+            document.getElementById('theme-mode-modal').classList.add('active');
+        };
+        window.openThemeColorModal = function() {
+            document.getElementById('theme-color-modal').classList.add('active');
+        };
+        window.closeModals = function() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+        };
 
         // ── Frosted Glass Toggle ──
         function toggleFrostedGlass(enabled) {
@@ -7681,35 +7826,46 @@
     // ── Auth State ──
     let sessionCheckInterval;
     
+    window.handleLogout = async function(bypassConfirm = false) {
+        const savedUser = localStorage.getItem("ceroviel_user");
+        let username = "User";
+        if (savedUser) {
+            try { username = JSON.parse(savedUser).username; } catch(e){}
+        }
+        if (!bypassConfirm) {
+            if (!confirm(`Logged in as ${username}\n\nDo you want to log out?`)) return;
+        }
+        const token = localStorage.getItem("session_token");
+        if (token) {
+            try {
+                await fetch(`${API}/logout`, {
+                    method: "POST",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+            } catch (e) { console.error("Logout API failed", e); }
+        }
+        localStorage.removeItem("ceroviel_user");
+        localStorage.removeItem("session_token");
+        if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
+        location.reload();
+    };
+    
     function updateAuthButton() {
         if (!authButton) return;
         const savedUser = localStorage.getItem("ceroviel_user");
         const adminBtn = document.getElementById("sidebar-admin-btn");
+        const sidebarLogoutBtn = document.getElementById("sidebar-logout-container");
         
         if (savedUser) {
+            if (sidebarLogoutBtn) sidebarLogoutBtn.style.display = "block";
             try {
                 const user = JSON.parse(savedUser);
                 authButton.title = `Logged in as ${user.username}`;
                 authButton.innerHTML = `<i class="fa-solid fa-user"></i>`;
                 authButton.style.cssText = 'cursor:pointer;';
-                authButton.onclick = async function (e) {
+                authButton.onclick = function (e) {
                     e.preventDefault();
-                    const logout = confirm(`Logged in as ${user.username}\n\nDo you want to log out?`);
-                    if (logout) {
-                        const token = localStorage.getItem("session_token");
-                        if (token) {
-                            try {
-                                await fetch(`${API}/logout`, {
-                                    method: "POST",
-                                    headers: { "Authorization": "Bearer " + token }
-                                });
-                            } catch (e) { console.error("Logout API failed", e); }
-                        }
-                        localStorage.removeItem("ceroviel_user");
-                        localStorage.removeItem("session_token");
-                        if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
-                        location.reload();
-                    }
+                    window.handleLogout();
                 };
                 
                 // Show admin button if username is ceroviel
@@ -7750,6 +7906,7 @@
                 localStorage.removeItem("ceroviel_user");
                 localStorage.removeItem("session_token");
                 if (adminBtn) adminBtn.style.display = 'none';
+                if (sidebarLogoutBtn) sidebarLogoutBtn.style.display = 'none';
                 if (typeof sessionCheckInterval !== 'undefined' && sessionCheckInterval) clearInterval(sessionCheckInterval);
             }
         } else {
@@ -7758,6 +7915,7 @@
             authButton.style.cssText = 'cursor:pointer;font-size:0.85rem;font-weight:600;letter-spacing:0.02em;';
             authButton.onclick = function () { navTo('login-view'); };
             if (adminBtn) adminBtn.style.display = 'none';
+            if (sidebarLogoutBtn) sidebarLogoutBtn.style.display = 'none';
             if (sessionCheckInterval) clearInterval(sessionCheckInterval);
         }
     }
@@ -8180,5 +8338,41 @@
     };
 })();
 </script>
+    <!-- Theme Mode Modal -->
+    <div id="theme-mode-modal" class="modal-overlay" onclick="if(event.target===this) closeModals()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Theme Mode</h3>
+                <button class="modal-close" onclick="closeModals()">&times;</button>
+            </div>
+            <div class="modal-list">
+                <div class="modal-list-item" id="mode-dark" onclick="setThemeMode('dark'); closeModals();">
+                    <span><i class="fa-solid fa-moon" style="margin-right: 8px;"></i>Dark</span>
+                    <i class="fa-solid fa-check checkmark" style="display:none;"></i>
+                </div>
+                <div class="modal-list-item" id="mode-light" onclick="setThemeMode('light'); closeModals();">
+                    <span><i class="fa-solid fa-sun" style="margin-right: 8px;"></i>Light</span>
+                    <i class="fa-solid fa-check checkmark" style="display:none;"></i>
+                </div>
+                <div class="modal-list-item" id="mode-system" onclick="setThemeMode('system'); closeModals();">
+                    <span><i class="fa-solid fa-desktop" style="margin-right: 8px;"></i>System</span>
+                    <i class="fa-solid fa-check checkmark" style="display:none;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Color Modal -->
+    <div id="theme-color-modal" class="modal-overlay" onclick="if(event.target===this) closeModals()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Accent Color</h3>
+                <button class="modal-close" onclick="closeModals()">&times;</button>
+            </div>
+            <div class="modal-list" id="theme-color-modal-list">
+                <!-- Color options injected by JS -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
