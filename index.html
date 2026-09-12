@@ -25,24 +25,24 @@
     <style>
         /* ── ROOT ── */
         :root {
-            --bg: #000000;
-            --surface: #0a0a0c;
-            --surface-2: #121214;
-            --surface-3: #1a1a1d;
-            --primary: #38bdf8;
-            --primary-rgb: 56, 189, 248;
-            --primary-soft: #7dd3fc;
-            --accent: #38bdf8;
+            --bg: #111111;
+            --surface: #1e1e24;
+            --surface-2: #2b2b36;
+            --surface-3: #393947;
+            --primary: #6B6999;
+            --primary-rgb: 107, 105, 153;
+            --primary-soft: #8B89B9;
+            --accent: #6B6999;
             --text: #f8fafc;
-            --text-muted: #94a3b8;
+            --text-muted: #a1a1aa;
             --danger: #ef4444;
             --success: #22c55e;
             --warning: #eab308;
-            --nav-bg: rgba(0, 0, 0, 0.94);
-            --line: #38bdf826;
+            --nav-bg: rgba(17, 17, 17, 0.94);
+            --line: rgba(107, 105, 153, 0.25);
             --radius: 16px;
             --shadow: 0 14px 45px rgba(0, 0, 0, 0.6);
-            --logo-color: #38bdf8;
+            --logo-color: #6B6999;
         }
         /* Light theme */
         [data-theme="light"] {
@@ -154,7 +154,7 @@
             border: 0.5px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
                         inset 0 0.5px 0 rgba(255, 255, 255, 0.1) !important;
-            border-radius: 12px;
+            border-radius: 8px;
         }
         .frosted-glass .btn:hover {
             background: rgba(var(--primary-rgb), 0.2) !important;
@@ -200,7 +200,7 @@
         /* Frosted login/signup button → true rectangle */
         .frosted-glass #loginBtn,
         .frosted-glass #signupBtn {
-            border-radius: 6px !important;
+            border-radius: 8px !important;
             background: rgba(var(--primary-rgb), 0.3) !important;
             color: #fff !important;
             font-weight: 600;
@@ -275,6 +275,9 @@
             padding: 0;
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         body {
             background: var(--bg);
@@ -490,28 +493,44 @@
         /* ── BUTTONS ── */
         .btn {
             width: 100%;
-            background: linear-gradient(135deg, #ffffff 0%, #1a1a1d 100%);
+            background: var(--primary);
             color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-            font-weight: bold;
-            border: 1px solid #444;
-            padding: 0.9rem;
-            border-radius: 15px;
+            font-weight: 600;
+            border: none;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.15s, background 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 8px rgba(107, 105, 153, 0.3);
+            text-shadow: none;
+            outline: none;
         }
-        .btn:hover {
-            opacity: 0.9;
+        .btn:hover, .btn:focus {
+            background: var(--primary-soft);
+            box-shadow: 0 4px 12px rgba(107, 105, 153, 0.5);
+            transform: translateY(-1px);
         }
         .btn:active {
             transform: scale(0.97);
+            box-shadow: 0 2px 4px rgba(107, 105, 153, 0.3);
         }
         .btn:disabled {
-            background: #1e293b;
-            color: #64748b;
+            background: var(--surface-3);
+            color: var(--text-muted);
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
+        }
+        .btn-secondary {
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--line);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: var(--surface-3);
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
         .btn-danger {
             background: rgba(239, 68, 68, 0.15);
@@ -519,13 +538,23 @@
             border: 1px solid rgba(239, 68, 68, 0.25);
             box-shadow: none;
         }
+        .btn-danger:hover, .btn-danger:focus {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--danger);
+        }
         .btn-accent {
-            background: linear-gradient(135deg, var(--primary), var(--primary-soft));
-            color: #000;
+            background: var(--primary);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-accent:hover, .btn-accent:focus {
+            background: var(--primary-soft);
+            color: #ffffff;
         }
         .btn-sm {
             width: auto !important;
-            padding: 0.55rem 0.8rem !important;
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.85rem;
         }
         .btn-outline {
             background: transparent !important;
@@ -533,12 +562,18 @@
             border: 1px solid var(--primary) !important;
             box-shadow: none !important;
         }
+        .btn-outline:hover, .btn-outline:focus {
+            background: rgba(107, 105, 153, 0.1) !important;
+            box-shadow: 0 2px 8px rgba(107, 105, 153, 0.2) !important;
+        }
         .btn-success {
             background: var(--success);
             color: #fff;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
         }
-        .btn-success:hover {
-            opacity: 0.85;
+        .btn-success:hover, .btn-success:focus {
+            background: #2ebd61;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
         }
 
         /* ── CHECKLIST ── */
@@ -2019,12 +2054,12 @@
         button:not(:disabled) {
             transform-origin: center;
             touch-action: manipulation;
-            transition: transform .12s ease, filter .12s ease, opacity .12s ease !important;
+            transition: transform .12s ease, opacity .12s ease !important;
         }
         button:not(:disabled):active,
         button.press-active {
             transform: scale(.965) !important;
-            filter: brightness(.76) !important;
+            opacity: 0.76 !important;
         }
         .modal-overlay {
             position: fixed;
@@ -2350,7 +2385,217 @@
             color: var(--success);
             font-weight: 700;
         }
+
+        /* ── CENTRE MENU POPUP ── */
+        .centre-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: 0.25s ease;
+        }
+        .centre-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .centre-menu {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 14px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: 0.25s ease;
+            min-width: 200px;
+        }
+        .centre-menu.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+        .centre-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .centre-menu-item:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .centre-menu-item i {
+            font-size: 1.1rem;
+            color: var(--primary);
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ── SOCIALBOOSTER ── */
+        .sb-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #E1306C, #F77737, #FCAF45);
+            border: 1px solid rgba(225, 48, 108, 0.3);
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.2s;
+            box-shadow: 0 2px 10px rgba(225, 48, 108, 0.25);
+        }
+        .sb-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(225, 48, 108, 0.4);
+        }
+        .sb-section-card {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+        .sb-section-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sb-section-card h3 i {
+            font-size: 1.15rem;
+        }
+        .sb-rate {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.15), rgba(247, 119, 55, 0.15));
+            border: 1px solid rgba(225, 48, 108, 0.25);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin: 8px 0 14px;
+            font-size: 0.85rem;
+            color: #F77737;
+            font-weight: 600;
+        }
+        .sb-rate i {
+            margin-right: 4px;
+        }
+        .sb-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .sb-input-row input {
+            flex: 1;
+            margin-bottom: 0 !important;
+        }
+        .sb-input-row .btn {
+            width: auto;
+            flex-shrink: 0;
+            padding: 0.75rem 1.2rem;
+        }
+        .sb-cost-display {
+            text-align: center;
+            padding: 10px;
+            background: var(--surface-3);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .sb-cost-display strong {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .sb-platform-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+        .sb-platform-header .sb-platform-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #E1306C, #F77737, #FCAF45);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        .sb-platform-header h3 {
+            font-size: 1.15rem;
+            color: var(--text);
+            margin: 0;
+        }
+        .sb-platform-header p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 2px 0 0;
+        }
+        .sb-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .sb-tab {
+            flex: 1;
+            padding: 10px 8px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--surface-2);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .sb-tab.active {
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.2), rgba(247, 119, 55, 0.2));
+            color: #F77737;
+            border-color: #E1306C;
+        }
+        .sb-tab:hover {
+            border-color: #E1306C;
+        }
+        .sb-tab-content {
+            display: none;
+        }
+        .sb-tab-content.active {
+            display: block;
+        }
     </style>
+
 </head>
 <body>
 
@@ -2361,6 +2606,14 @@
             <h2>Dashboard</h2>
             <button onclick="toggleSidebar()" class="sidebar-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        
+        <!-- Admin Button (Hidden by default, only shown if user is ceroviel) -->
+        <div id="sidebar-admin-btn" style="display: none; padding: 0 16px 16px;">
+            <button class="btn btn-accent" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="toggleSidebar(); navTo('uadmin-view')">
+                <i class="fa-solid fa-shield-halved"></i> Admin Panel
+            </button>
+        </div>
+
         <div class="contact-box">
             <h3>Theme Color</h3>
             <div class="theme-grid" id="theme-grid"></div>
@@ -2397,19 +2650,7 @@
         <div id="home-view" class="view-section active">
             <div class="app-header">
                 <a class="brand" href="#home-view" onclick="navTo('home-view',null);return false;">
-                    <span class="logo-icon" id="brand-logo">
-                        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="18" cy="18" r="16" stroke="currentColor" stroke-width="2.5"/>
-                            <path d="M12 12 L24 12 L24 24 L12 24 Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-                            <path d="M8 18 L12 18 M24 18 L28 18 M18 8 L18 12 M18 24 L18 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="18" cy="18" r="4" stroke="currentColor" stroke-width="2"/>
-                            <path d="M16 14 L20 14 L20 22 L16 22 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                            <line x1="18" y1="12" x2="18" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            <line x1="18" y1="26" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            <line x1="10" y1="18" x2="12" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            <line x1="24" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                        </svg>
-                    </span>
+                    <img src="logo.png" alt="Logo" style="max-height: 44px; width: auto; object-fit: contain; display: block;" />
                     <span class="logo-text">Ceroviel</span>
                 </a>
                 <div class="header-actions">
@@ -2444,6 +2685,8 @@
                 <button class="quick-item" onclick="navTo('minigames-view')"><div class="quick-icon"><i class="fa-solid fa-gamepad"></i></div><span>Minigames</span></button>
                 <button class="quick-item" onclick="navTo('formula-view')"><div class="quick-icon"><i class="fa-solid fa-book-open"></i></div><span>Formula Vault</span></button>
                 <button class="quick-item" onclick="navTo('history-view')"><div class="quick-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><span>History</span></button>
+                <button class="quick-item" onclick="navTo('social-booster-view')"><div class="quick-icon"><i class="fa-brands fa-instagram"></i></div><span>Social Booster</span></button>
+                <button class="quick-item" onclick="navTo('typing-view')"><div class="quick-icon"><i class="fa-solid fa-keyboard"></i></div><span>Practice Typing</span></button>
             </div>
             <div class="card quote-card"><div class="quote-mark">“</div><p>Discipline today. Success tomorrow.</p><small>— Your Future Self</small></div>
         </div>
@@ -2801,6 +3044,728 @@
             </div>
         </div>
 
+        <!-- ═══ TYPING PRACTICE ═══ -->
+        <div id="typing-view" class="view-section">
+            <style>
+            /* ════════════════════════════════════════
+               MONKEY-STYLE TYPING — CEROVIEL THEME
+            ════════════════════════════════════════ */
+            #mt-wrap {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 0 24px 80px;
+                gap: 0;
+                background: var(--bg);
+                transition: background 0.3s;
+                position: relative;
+            }
+
+            /* ── top bar ── */
+            #mt-topbar {
+                width: 100%;
+                max-width: 900px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 18px 0 28px;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+            #mt-logo {
+                font-size: 1rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                color: var(--primary);
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                user-select: none;
+            }
+            #mt-logo i { font-size: 1.1rem; }
+
+            /* mode pills */
+            #mt-modes {
+                display: flex;
+                gap: 6px;
+                background: var(--surface-2);
+                border-radius: 999px;
+                padding: 4px 6px;
+                border: 1px solid var(--line);
+            }
+            .mt-mode-btn {
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                font: inherit;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 5px 14px;
+                border-radius: 999px;
+                cursor: pointer;
+                transition: background 0.18s, color 0.18s;
+                letter-spacing: 0.04em;
+            }
+            .mt-mode-btn:hover { color: var(--text); }
+            .mt-mode-btn.active {
+                background: var(--primary);
+                color: #fff;
+            }
+
+            /* live stats */
+            #mt-live {
+                display: flex;
+                gap: 22px;
+                align-items: baseline;
+            }
+            .mt-live-stat { display:flex; flex-direction:column; align-items:flex-end; }
+            .mt-live-val {
+                font-size: 1.5rem;
+                font-weight: 800;
+                line-height: 1;
+                color: var(--primary-soft);
+                letter-spacing: -0.04em;
+                transition: color 0.2s;
+            }
+            .mt-live-lbl {
+                font-size: 0.58rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--text-muted);
+                margin-top: 1px;
+                text-align: right;
+            }
+
+            /* ── progress bar ── */
+            #mt-progress-bar {
+                width: 100%;
+                max-width: 900px;
+                height: 2px;
+                background: var(--line);
+                border-radius: 2px;
+                margin-bottom: 36px;
+                overflow: hidden;
+            }
+            #mt-progress-fill {
+                height: 100%;
+                background: var(--primary);
+                width: 100%;
+                border-radius: 2px;
+                transition: width 1s linear;
+            }
+
+            /* ── word box ── */
+            #mt-box {
+                width: 100%;
+                max-width: 900px;
+                position: relative;
+                cursor: text;
+            }
+
+            #mt-words {
+                font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+                line-height: 2.05;
+                font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+                letter-spacing: 0.015em;
+                user-select: none;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.45em;
+                /* show exactly 3 lines; overflow hidden */
+                overflow: hidden;
+                height: calc(2.05em * 3 * clamp(1.15rem, 2.4vw, 1.55rem));
+                align-content: flex-start;
+                position: relative;
+                mask-image: linear-gradient(to bottom,
+                    transparent 0%,
+                    black 18%,
+                    black 72%,
+                    transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom,
+                    transparent 0%,
+                    black 18%,
+                    black 72%,
+                    transparent 100%);
+            }
+
+            .mt-word {
+                display: inline-flex;
+                position: relative;
+                border-radius: 3px;
+                transition: opacity 0.25s;
+            }
+            /* wrong-word underline */
+            .mt-word.wrong-word {
+                box-shadow: 0 2px 0 0 var(--danger);
+            }
+
+            .mt-ch {
+                color: var(--text-muted);
+                transition: color 0.07s;
+            }
+            .mt-ch.correct { color: var(--text); }
+            .mt-ch.wrong   { color: var(--danger); }
+            .mt-ch.extra   { color: var(--danger); opacity: 0.65; font-size: 0.88em; }
+
+            /* ── Smooth gliding caret ── */
+            #mt-caret {
+                position: absolute;
+                width: 2.5px;
+                border-radius: 3px;
+                background: var(--primary-soft);
+                box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.75);
+                pointer-events: none;
+                z-index: 9;
+                /* smooth glide */
+                transition:
+                    left   0.055s cubic-bezier(0.22, 1, 0.36, 1),
+                    top    0.13s  cubic-bezier(0.22, 1, 0.36, 1),
+                    height 0.07s  ease,
+                    opacity 0.15s ease;
+                animation: mt-blink 1.05s step-start infinite;
+            }
+            #mt-caret.active { animation: none; opacity: 1; }
+            @keyframes mt-blink {
+                0%, 100% { opacity: 1; }
+                50%       { opacity: 0; }
+            }
+
+            /* blurred overlay when unfocused */
+            #mt-blur-overlay {
+                position: absolute;
+                inset: -12px;
+                z-index: 8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 16px;
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                opacity: 1;
+                transition: opacity 0.25s;
+                pointer-events: all;
+                cursor: pointer;
+            }
+            #mt-blur-overlay span {
+                color: var(--text-muted);
+                font-size: 0.88rem;
+                letter-spacing: 0.08em;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            #mt-blur-overlay.gone {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            /* ── hidden real input ── */
+            #mt-input {
+                position: absolute;
+                opacity: 0;
+                width: 1px;
+                height: 1px;
+                top: 0; left: 0;
+                pointer-events: none;
+                caret-color: transparent;
+            }
+
+            /* ── restart hint ── */
+            #mt-hint {
+                margin-top: 28px;
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                letter-spacing: 0.06em;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                opacity: 0.7;
+                user-select: none;
+            }
+            #mt-hint kbd {
+                background: var(--surface-2);
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                padding: 2px 8px;
+                font-size: 0.72rem;
+                font-family: inherit;
+                color: var(--text-muted);
+            }
+
+            /* ════════ RESULTS SCREEN ════════ */
+            #mt-result {
+                position: fixed;
+                inset: 0;
+                z-index: 200;
+                background: var(--bg);
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 36px;
+                padding: 40px 24px;
+                transition: background 0.3s;
+            }
+            #mt-result.show { display: flex; }
+            #mt-result-title {
+                font-size: 0.7rem;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+            }
+            #mt-result-wpm-big {
+                font-size: clamp(4rem, 12vw, 8rem);
+                font-weight: 900;
+                line-height: 1;
+                color: var(--primary-soft);
+                letter-spacing: -0.06em;
+            }
+            #mt-result-wpm-lbl {
+                font-size: 0.7rem;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                margin-top: -28px;
+            }
+            #mt-result-grid {
+                display: flex;
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .mt-r-card {
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 20px;
+                padding: 20px 28px 16px;
+                text-align: center;
+                min-width: 110px;
+                transition: background 0.3s, border 0.3s;
+            }
+            .mt-r-val {
+                font-size: 1.9rem;
+                font-weight: 800;
+                color: var(--primary-soft);
+                letter-spacing: -0.04em;
+                line-height: 1;
+            }
+            .mt-r-lbl {
+                font-size: 0.62rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--text-muted);
+                margin-top: 7px;
+            }
+            #mt-result-again {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: none;
+                border: 1.5px solid var(--line);
+                color: var(--text-muted);
+                border-radius: 999px;
+                padding: 10px 28px;
+                font: inherit;
+                font-size: 0.85rem;
+                font-weight: 600;
+                letter-spacing: 0.06em;
+                cursor: pointer;
+                transition: border-color 0.18s, color 0.18s, background 0.18s;
+            }
+            #mt-result-again:hover {
+                border-color: var(--primary);
+                color: var(--primary-soft);
+                background: var(--line);
+            }
+
+            /* ── Back button (result screen) ── */
+            #mt-result-back {
+                position: absolute;
+                top: 22px; left: 22px;
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                font: inherit;
+                font-size: 0.82rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 10px;
+                border-radius: 8px;
+                transition: color 0.18s, background 0.18s;
+            }
+            #mt-result-back:hover { color: var(--text); background: var(--surface-2); }
+
+            @media (max-width: 600px) {
+                #mt-words { font-size: 1.1rem; }
+                #mt-result-wpm-big { font-size: 5rem; }
+                .mt-r-card { padding: 14px 16px 12px; min-width: 80px; }
+                .mt-r-val { font-size: 1.4rem; }
+            }
+            </style>
+
+            <!-- ══════════ MAIN TYPING UI ══════════ -->
+            <div id="mt-wrap">
+
+                <!-- Top Bar -->
+                <div id="mt-topbar">
+                    <div id="mt-logo">
+                        <i class="fa-solid fa-keyboard"></i>
+                        Practice Typing
+                    </div>
+
+                    <!-- Duration mode pills -->
+                    <div id="mt-modes">
+                        <button class="mt-mode-btn" data-sec="15"  onclick="mtSetMode(15)">15s</button>
+                        <button class="mt-mode-btn" data-sec="30"  onclick="mtSetMode(30)">30s</button>
+                        <button class="mt-mode-btn active" data-sec="60"  onclick="mtSetMode(60)">60s</button>
+                        <button class="mt-mode-btn" data-sec="120" onclick="mtSetMode(120)">120s</button>
+                    </div>
+
+                    <!-- Live stats -->
+                    <div id="mt-live">
+                        <div class="mt-live-stat">
+                            <span class="mt-live-val" id="mt-live-wpm">–</span>
+                            <span class="mt-live-lbl">wpm</span>
+                        </div>
+                        <div class="mt-live-stat">
+                            <span class="mt-live-val" id="mt-live-acc">–</span>
+                            <span class="mt-live-lbl">acc</span>
+                        </div>
+                        <div class="mt-live-stat">
+                            <span class="mt-live-val" id="mt-live-timer">60</span>
+                            <span class="mt-live-lbl">sec</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress bar -->
+                <div id="mt-progress-bar"><div id="mt-progress-fill"></div></div>
+
+                <!-- Word box -->
+                <div id="mt-box" onclick="mtFocus()">
+                    <div id="mt-words"></div>
+                    <div id="mt-caret"></div>
+                    <div id="mt-blur-overlay">
+                        <span><i class="fa-solid fa-arrow-pointer"></i> Click to focus</span>
+                    </div>
+                    <input id="mt-input" type="text" autocomplete="off" autocorrect="off"
+                           autocapitalize="off" spellcheck="false"
+                           oninput="mtOnInput()" onkeydown="mtOnKeyDown(event)"
+                           onblur="mtOnBlur()" onfocus="mtOnFocusIn()" />
+                </div>
+
+                <!-- Hint -->
+                <div id="mt-hint">
+                    <kbd>Tab</kbd> restart &nbsp;·&nbsp; <kbd>Space</kbd> next word &nbsp;·&nbsp; <kbd>Backspace</kbd> fix
+                </div>
+            </div>
+
+            <!-- ══════════ RESULTS SCREEN ══════════ -->
+            <div id="mt-result">
+                <button id="mt-result-back" onclick="mtInit()">
+                    <i class="fa-solid fa-arrow-left"></i> Try again
+                </button>
+                <div id="mt-result-title">your results</div>
+                <div id="mt-result-wpm-big" id="mt-r-wpm-big">0</div>
+                <div id="mt-result-wpm-lbl">words per minute</div>
+                <div id="mt-result-grid">
+                    <div class="mt-r-card"><div class="mt-r-val" id="mt-r-acc">0%</div><div class="mt-r-lbl">Accuracy</div></div>
+                    <div class="mt-r-card"><div class="mt-r-val" id="mt-r-correct">0</div><div class="mt-r-lbl">Correct</div></div>
+                    <div class="mt-r-card"><div class="mt-r-val" id="mt-r-wrong">0</div><div class="mt-r-lbl">Incorrect</div></div>
+                    <div class="mt-r-card"><div class="mt-r-val" id="mt-r-words">0</div><div class="mt-r-lbl">Words</div></div>
+                    <div class="mt-r-card"><div class="mt-r-val" id="mt-r-time">0s</div><div class="mt-r-lbl">Time</div></div>
+                </div>
+                <button id="mt-result-again" onclick="mtInit()">
+                    <i class="fa-solid fa-rotate-right"></i> Restart
+                </button>
+            </div>
+
+            <script>
+            (function(){
+            'use strict';
+            /* ── word bank ── */
+            const BANK = "the be to of and a in that have it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us great between need large often hand high place world every found still learn should show around form small set put end does another well large often turn here why ask came show change off play spell air away animal house point page letter mother answer found still learn give study country sometimes side foot care second move write long things seem family important example hear body dog enough both almost read world been called below ground always family show live each feel hold between right between near add food eat keep children state once base hear horse cut sure watch color face wood main open seem".split(" ");
+
+            /* ── state ── */
+            let mt = {
+                words: [], wordIdx: 0, charIdx: 0, extraChars: [],
+                timer: null, secsLeft: 60, totalSecs: 60,
+                started: false, finished: false,
+                correctChars: 0, wrongChars: 0, wordsOk: 0,
+                lineOffsetPx: 0, currentLine: 0,
+            };
+
+            /* ── DOM ── */
+            const $ = id => document.getElementById(id);
+            const elWords    = $('mt-words');
+            const elInput    = $('mt-input');
+            const elCaret    = $('mt-caret');
+            const elFill     = $('mt-progress-fill');
+            const elTimer    = $('mt-live-timer');
+            const elWpm      = $('mt-live-wpm');
+            const elAcc      = $('mt-live-acc');
+            const elResult   = $('mt-result');
+            const elBlur     = $('mt-blur-overlay');
+            const elRWpm     = $('mt-result-wpm-big');
+            const elRAcc     = $('mt-r-acc');
+            const elRCorrect = $('mt-r-correct');
+            const elRWrong   = $('mt-r-wrong');
+            const elRWords   = $('mt-r-words');
+            const elRTime    = $('mt-r-time');
+
+            /* ── helpers ── */
+            function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+
+            function buildWords(){
+                const pool=[];
+                while(pool.length<120) pool.push(...shuffle(BANK));
+                mt.words = pool.slice(0,120);
+                elWords.innerHTML='';
+                mt.words.forEach((w,wi)=>{
+                    const div=document.createElement('div');
+                    div.className='mt-word';
+                    div.dataset.wi=wi;
+                    [...w].forEach((ch,ci)=>{
+                        const s=document.createElement('span');
+                        s.className='mt-ch';
+                        s.dataset.ci=ci;
+                        s.textContent=ch;
+                        div.appendChild(s);
+                    });
+                    elWords.appendChild(div);
+                });
+                elWords.style.transform='translateY(0)';
+                mt.lineOffsetPx=0;
+                mt.currentLine=0;
+            }
+
+            function wordEl(wi){ return elWords.querySelector(`.mt-word[data-wi="${wi}"]`); }
+
+            /* ── caret positioning ── */
+            function moveCaret(){
+                const wd = wordEl(mt.wordIdx);
+                if(!wd) return;
+                const allCh = wd.querySelectorAll('.mt-ch');
+                const total = mt.charIdx + mt.extraChars.length;
+                const ref   = allCh[total] || null;
+
+                const wR  = elWords.getBoundingClientRect();
+                let left, top, height;
+
+                if(ref){
+                    const r=ref.getBoundingClientRect();
+                    left=r.left-wR.left; top=r.top-wR.top; height=r.height;
+                } else if(allCh.length){
+                    const last=allCh[allCh.length-1].getBoundingClientRect();
+                    left=last.right-wR.left; top=last.top-wR.top; height=last.height;
+                } else {
+                    const r=wd.getBoundingClientRect();
+                    left=r.left-wR.left; top=r.top-wR.top; height=r.height;
+                }
+                elCaret.style.left   = left   + 'px';
+                elCaret.style.top    = (top + mt.lineOffsetPx) + 'px';
+                elCaret.style.height = (height||24) + 'px';
+            }
+
+            /* scroll words up by one line when caret reaches 2nd line */
+            function checkScroll(){
+                const wd = wordEl(mt.wordIdx);
+                if(!wd) return;
+                const wR = elWords.getBoundingClientRect();
+                const dR = wd.getBoundingClientRect();
+                const lineH = parseFloat(getComputedStyle(wd).lineHeight)||34;
+                // which line (0-indexed) is this word on?
+                const line = Math.round((dR.top - wR.top) / lineH);
+                if(line > 1 && line !== mt.currentLine){
+                    mt.currentLine = line;
+                    // slide words up so current line stays at line 1 (middle)
+                    mt.lineOffsetPx -= lineH;
+                    elWords.style.transform = `translateY(${mt.lineOffsetPx}px)`;
+                    elWords.style.transition = 'transform 0.2s cubic-bezier(0.22,1,0.36,1)';
+                }
+            }
+
+            /* ── stats ── */
+            function calcWpm(){
+                const elapsed=(mt.totalSecs-mt.secsLeft)||1;
+                return Math.round(mt.wordsOk/(elapsed/60));
+            }
+            function calcAcc(){
+                const t=mt.correctChars+mt.wrongChars;
+                return t===0?100:Math.round(mt.correctChars/t*100);
+            }
+            function updateLive(){
+                elWpm.textContent = mt.started ? calcWpm() : '–';
+                elAcc.textContent = mt.started ? calcAcc()+'%' : '–';
+            }
+
+            /* ── timer ── */
+            function startTimer(){
+                if(mt.timer) return;
+                mt.timer = setInterval(()=>{
+                    mt.secsLeft--;
+                    elTimer.textContent = mt.secsLeft;
+                    elFill.style.width  = (mt.secsLeft/mt.totalSecs*100)+'%';
+                    updateLive();
+                    if(mt.secsLeft<=0) endTest();
+                },1000);
+            }
+
+            /* ── end ── */
+            function endTest(){
+                clearInterval(mt.timer); mt.timer=null;
+                mt.finished=true;
+                elInput.blur();
+                const wpm=calcWpm(), acc=calcAcc();
+                elRWpm.textContent     = wpm;
+                elRAcc.textContent     = acc+'%';
+                elRCorrect.textContent = mt.correctChars;
+                elRWrong.textContent   = mt.wrongChars;
+                elRWords.textContent   = mt.wordsOk;
+                elRTime.textContent    = (mt.totalSecs-mt.secsLeft)+'s';
+                elResult.classList.add('show');
+            }
+
+            /* ── init ── */
+            window.mtInit = function(){
+                clearInterval(mt.timer);
+                mt={words:[],wordIdx:0,charIdx:0,extraChars:[],
+                    timer:null,secsLeft:mt.totalSecs||60,totalSecs:mt.totalSecs||60,
+                    started:false,finished:false,
+                    correctChars:0,wrongChars:0,wordsOk:0,
+                    lineOffsetPx:0,currentLine:0};
+                elFill.style.transition='none';
+                elFill.style.width='100%';
+                requestAnimationFrame(()=>{ elFill.style.transition='width 1s linear'; });
+                elTimer.textContent = mt.secsLeft;
+                elWpm.textContent='–'; elAcc.textContent='–';
+                elInput.value='';
+                elInput.disabled=false;
+                elResult.classList.remove('show');
+                buildWords();
+                elBlur.classList.remove('gone');
+                setTimeout(moveCaret,40);
+            };
+
+            window.mtSetMode=function(s){
+                document.querySelectorAll('.mt-mode-btn').forEach(b=>{
+                    b.classList.toggle('active', +b.dataset.sec===s);
+                });
+                mt.totalSecs=s;
+                mtInit();
+            };
+
+            window.mtFocus=function(){
+                elBlur.classList.add('gone');
+                elInput.focus();
+                moveCaret();
+            };
+            window.mtOnFocusIn=function(){ elBlur.classList.add('gone'); };
+            window.mtOnBlur=function(){
+                if(!mt.finished) elBlur.classList.remove('gone');
+            };
+
+            window.mtOnInput=function(){
+                if(mt.finished) return;
+                if(!mt.started){ mt.started=true; startTimer(); }
+
+                // pulse caret
+                elCaret.classList.add('active');
+                clearTimeout(window._mtBlink);
+                window._mtBlink=setTimeout(()=>elCaret.classList.remove('active'),800);
+
+                const val=elInput.value;
+                const word=mt.words[mt.wordIdx];
+                if(!word) return;
+
+                const wd=wordEl(mt.wordIdx);
+                // reset letters
+                wd.querySelectorAll('.mt-ch').forEach(s=>s.className='mt-ch');
+                wd.querySelectorAll('.mt-ch.extra').forEach(s=>s.remove());
+                mt.extraChars=[];
+
+                [...val].forEach((ch,i)=>{
+                    if(i<word.length){
+                        const s=wd.querySelector(`span[data-ci="${i}"]`);
+                        if(s) s.className='mt-ch '+(ch===word[i]?'correct':'wrong');
+                    } else {
+                        const s=document.createElement('span');
+                        s.className='mt-ch extra';
+                        s.textContent=ch;
+                        wd.appendChild(s);
+                        mt.extraChars.push(s);
+                    }
+                });
+
+                mt.charIdx=Math.min(val.length,word.length);
+                // wrong-word border
+                const hasWrong=[...wd.querySelectorAll('.mt-ch')].some(s=>s.classList.contains('wrong'));
+                wd.classList.toggle('wrong-word', hasWrong && val.length>0);
+
+                moveCaret();
+            };
+
+            window.mtOnKeyDown=function(e){
+                if(e.key==='Tab'){ e.preventDefault(); mtInit(); return; }
+                if(mt.finished) return;
+
+                if(e.key===' '){
+                    e.preventDefault();
+                    const val=elInput.value.trimEnd();
+                    if(!val) return;
+                    const word=mt.words[mt.wordIdx];
+                    // score
+                    [...word].forEach((ch,i)=>{
+                        if(i<val.length){ val[i]===ch?mt.correctChars++:mt.wrongChars++; }
+                        else mt.wrongChars++;
+                    });
+                    if(val.length>word.length) mt.wrongChars+=(val.length-word.length);
+                    if(val===word) mt.wordsOk++;
+
+                    mt.wordIdx++; mt.charIdx=0; mt.extraChars=[];
+                    elInput.value='';
+                    checkScroll();
+                    moveCaret();
+                    updateLive();
+                    if(mt.wordIdx>=mt.words.length) endTest();
+                }
+
+                if(e.key==='Backspace' && elInput.value==='' && mt.wordIdx>0){
+                    mt.wordIdx--;
+                    const wd=wordEl(mt.wordIdx);
+                    // rebuild input from styled chars
+                    let prev='';
+                    wd.querySelectorAll('.mt-ch:not(.extra)').forEach(s=>{
+                        if(s.classList.contains('correct')||s.classList.contains('wrong'))
+                            prev+=s.textContent;
+                    });
+                    elInput.value=prev;
+                    mt.charIdx=prev.length;
+                    moveCaret();
+                }
+            };
+
+            /* ── wire navTo ── */
+            const _origNav=window.navTo;
+            window.navTo=function(id,btn){
+                _origNav&&_origNav(id,btn);
+                if(id==='typing-view') setTimeout(mtInit,90);
+            };
+
+            window.addEventListener('resize',()=>{
+                if(!mt.finished) setTimeout(moveCaret,30);
+            });
+
+            /* boot if already active */
+            if($('typing-view').classList.contains('active')) mtInit();
+            })();
+            </script>
+        </div>
         <!-- ═══ FORMULA VAULT ═══ -->
         <div id="formula-view" class="view-section">
             <div class="card">
@@ -3067,7 +4032,7 @@
                 <h2 style="text-align:center;"><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
                 <input id="login-username" type="text" placeholder="Username" autocomplete="username">
                 <input id="login-password" type="password" placeholder="Password" autocomplete="current-password">
-                <button class="btn" id="loginBtn" style="border-radius:6px;padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Login</button>
+                <button class="btn" id="loginBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Login</button>
                 <div id="login-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
                 <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
                     Don't have an account?
@@ -3085,7 +4050,7 @@
                 <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
                 <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
                 <input id="signup-confirm" type="password" placeholder="Confirm Password" autocomplete="new-password">
-                <button class="btn" id="signupBtn" style="border-radius:6px;padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Sign Up</button>
+                <button class="btn" id="signupBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Sign Up</button>
                 <div id="signup-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
                 <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
                     Already have an account?
@@ -3115,6 +4080,293 @@
         <div id="pt-detail-overlay" class="pt-detail-overlay" onclick="if(event.target===this)closeElementDetail()"><div class="pt-detail-card"><button class="modal-close" onclick="closeElementDetail()" aria-label="Close">&times;</button><div id="pt-detail-body"></div></div></div>
     </div>
 
+    <!-- ─── SOCIALBOOSTER VIEW ─── -->
+    <div id="social-booster-view" class="view-section">
+        <div class="card">
+            <h2 style="margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;">
+                <div class="sb-icon"><i class="fa-brands fa-instagram"></i></div>
+                SocialBooster
+            </h2>
+
+            <div class="sb-tabs">
+                <div class="sb-tab active" onclick="switchSbTab('followers')">Followers</div>
+                <div class="sb-tab" onclick="switchSbTab('views')">Views</div>
+                <div class="sb-tab" onclick="switchSbTab('shares')">Shares</div>
+            </div>
+
+            <!-- ── Followers Tab ── -->
+            <div id="sb-followers-tab" class="sb-tab-content active">
+                <div class="sb-section-card">
+                    <h3><i class="fa-solid fa-users"></i> Instagram Followers</h3>
+                    <div class="sb-rate"><i class="fa-solid fa-tag"></i> ₹200 per 1k</div>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;">Enter the Instagram username and quantity.</p>
+                    <input type="text" id="sb-followers-target" placeholder="@username or Instagram profile link" style="margin-bottom:8px;">
+                    <input type="text" id="sb-followers-contact" placeholder="WhatsApp number (optional)" style="margin-bottom:8px;">
+                    <div class="sb-input-row">
+                        <input type="number" id="sb-followers-input" placeholder="e.g. 1000" oninput="calcSbPrice('followers', 200)">
+                    </div>
+                    <div class="sb-cost-display">Total Cost: <strong id="sb-followers-cost">₹0.00</strong></div>
+                    <button class="btn btn-accent" style="margin-top:12px;" onclick="submitSbOrder('followers', 200)">Place Order</button>
+                </div>
+            </div>
+
+            <!-- ── Views Tab ── -->
+            <div id="sb-views-tab" class="sb-tab-content">
+                <div class="sb-section-card">
+                    <h3><i class="fa-solid fa-eye"></i> Instagram Views</h3>
+                    <div class="sb-rate"><i class="fa-solid fa-tag"></i> 30 Paise (₹0.30) per 1k</div>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;">Enter desired views (Minimum order: ₹10)</p>
+                    <input type="text" id="sb-views-target" placeholder="Instagram post/reel link" style="margin-bottom:8px;">
+                    <input type="text" id="sb-views-contact" placeholder="WhatsApp number (optional)" style="margin-bottom:8px;">
+                    <div class="sb-input-row">
+                        <input type="number" id="sb-views-input" placeholder="e.g. 50000" oninput="calcSbPrice('views', 0.30)">
+                    </div>
+                    <div class="sb-cost-display">Total Cost: <strong id="sb-views-cost">₹0.00</strong></div>
+                    <div id="sb-views-warn" style="color:var(--danger);font-size:0.8rem;text-align:center;margin-top:8px;display:none;">Minimum order is ₹10</div>
+                    <button class="btn btn-accent" id="sb-views-btn" style="margin-top:12px;" onclick="submitSbOrder('views', 0.30)">Place Order</button>
+                </div>
+            </div>
+
+            <!-- ── Shares Tab ── -->
+            <div id="sb-shares-tab" class="sb-tab-content">
+                <div class="sb-section-card">
+                    <h3><i class="fa-solid fa-share-nodes"></i> Instagram Shares</h3>
+                    <div class="sb-rate"><i class="fa-solid fa-tag"></i> ₹150 per 1k</div>
+                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;">Enter the post link and quantity.</p>
+                    <input type="text" id="sb-shares-target" placeholder="Instagram post/reel link" style="margin-bottom:8px;">
+                    <input type="text" id="sb-shares-contact" placeholder="WhatsApp number (optional)" style="margin-bottom:8px;">
+                    <div class="sb-input-row">
+                        <input type="number" id="sb-shares-input" placeholder="e.g. 500" oninput="calcSbPrice('shares', 150)">
+                    </div>
+                    <div class="sb-cost-display">Total Cost: <strong id="sb-shares-cost">₹0.00</strong></div>
+                    <button class="btn btn-accent" style="margin-top:12px;" onclick="submitSbOrder('shares', 150)">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ ADMIN PANEL ═══ -->
+    <div id="uadmin-view" class="view-section">
+        <style>
+        /* ── Admin Panel Styles ── */
+        #admin-lock-screen {
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            min-height:80vh;gap:22px;text-align:center;
+        }
+        #admin-lock-screen .lock-icon {
+            width:70px;height:70px;border-radius:50%;
+            background:var(--surface-2);display:grid;place-items:center;
+            font-size:1.8rem;color:var(--primary);border:2px solid var(--line);
+        }
+        #admin-lock-screen h2 { margin:0; }
+        #admin-lock-screen input {
+            max-width:260px;text-align:center;letter-spacing:0.3em;
+            font-size:1.2rem;font-weight:700;
+        }
+        #admin-lock-screen .admin-err {
+            color:var(--danger);font-size:0.82rem;min-height:1.2em;
+        }
+
+        #admin-dashboard { display:none; }
+        #admin-dashboard.unlocked { display:block; }
+
+        .admin-header {
+            display:flex;align-items:center;justify-content:space-between;
+            flex-wrap:wrap;gap:12px;margin-bottom:20px;
+        }
+        .admin-header h2 {
+            margin:0;display:flex;align-items:center;gap:10px;font-size:1.15rem;
+        }
+        .admin-live-dot {
+            width:8px;height:8px;border-radius:50%;background:var(--success);
+            display:inline-block;animation:admin-pulse 2s ease infinite;
+        }
+        @keyframes admin-pulse {
+            0%,100%{opacity:1}50%{opacity:0.3}
+        }
+
+        .admin-stats-grid {
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+            gap:12px;margin-bottom:22px;
+        }
+        .admin-stat-card {
+            background:var(--surface);border:1px solid var(--line);border-radius:18px;
+            padding:18px 14px 14px;text-align:center;transition:background 0.3s,border 0.3s;
+        }
+        .admin-stat-val {
+            font-size:1.6rem;font-weight:800;color:var(--primary-soft);
+            line-height:1;letter-spacing:-0.03em;
+        }
+        .admin-stat-lbl {
+            font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;
+            color:var(--text-muted);margin-top:6px;
+        }
+
+        .admin-controls {
+            display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;
+        }
+        .admin-controls input[type="text"] {
+            flex:1;min-width:180px;margin-bottom:0!important;
+        }
+        .admin-filter-btn {
+            background:var(--surface-2);border:1px solid var(--line);color:var(--text-muted);
+            font:inherit;font-size:0.78rem;font-weight:600;padding:8px 14px;
+            border-radius:999px;cursor:pointer;transition:all 0.18s;
+            white-space:nowrap;
+        }
+        .admin-filter-btn:hover { color:var(--text);border-color:var(--primary); }
+        .admin-filter-btn.active { background:var(--primary);color:#fff;border-color:var(--primary); }
+
+        .admin-batch {
+            display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;
+        }
+
+        .admin-order-list { display:flex;flex-direction:column;gap:10px; }
+
+        .admin-order-card {
+            background:var(--surface);border:1px solid var(--line);border-radius:16px;
+            padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+            transition:background 0.3s,border 0.3s;
+        }
+        .admin-order-card:hover { border-color:var(--primary); }
+
+        .ao-id {
+            font-weight:700;font-size:0.88rem;color:var(--primary-soft);min-width:80px;
+        }
+        .ao-date {
+            font-size:0.72rem;color:var(--text-muted);min-width:110px;
+        }
+        .ao-service {
+            display:inline-flex;align-items:center;gap:5px;
+            background:var(--surface-2);border:1px solid var(--line);
+            border-radius:999px;padding:3px 10px;font-size:0.72rem;font-weight:600;
+            color:var(--text);white-space:nowrap;
+        }
+        .ao-service i { font-size:0.78rem;color:var(--primary); }
+        .ao-target {
+            flex:1;min-width:140px;font-size:0.84rem;color:var(--text);
+            word-break:break-all;display:flex;align-items:center;gap:6px;
+        }
+        .ao-target .copy-btn {
+            background:none;border:none;color:var(--text-muted);cursor:pointer;
+            font-size:0.72rem;padding:2px 6px;border-radius:6px;transition:color 0.15s;
+        }
+        .ao-target .copy-btn:hover { color:var(--primary); }
+        .ao-qty { font-size:0.82rem;color:var(--text-muted);min-width:60px; }
+        .ao-price { font-weight:700;font-size:0.88rem;color:var(--text);min-width:70px; }
+
+        .ao-status {
+            display:inline-flex;align-items:center;gap:4px;
+            padding:4px 10px;border-radius:999px;font-size:0.7rem;font-weight:700;
+            letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap;
+        }
+        .ao-status.pending    { background:rgba(234,179,8,0.15);color:#eab308; }
+        .ao-status.processing { background:rgba(59,130,246,0.15);color:#3b82f6; }
+        .ao-status.completed  { background:rgba(34,197,94,0.15);color:#22c55e; }
+        .ao-status.cancelled  { background:rgba(239,68,68,0.15);color:#ef4444; }
+
+        .ao-actions {
+            display:flex;gap:6px;margin-left:auto;
+        }
+        .ao-actions select {
+            width:auto!important;padding:4px 8px!important;font-size:0.72rem!important;
+            border-radius:8px!important;margin:0!important;min-width:100px;
+        }
+        .ao-actions button {
+            background:none;border:1px solid var(--line);color:var(--text-muted);
+            border-radius:8px;padding:4px 10px;font:inherit;font-size:0.72rem;
+            cursor:pointer;transition:all 0.15s;
+        }
+        .ao-actions button:hover { color:var(--danger);border-color:var(--danger); }
+
+        .admin-empty {
+            text-align:center;padding:48px 20px;color:var(--text-muted);
+        }
+        .admin-empty i { font-size:2.5rem;margin-bottom:12px;display:block;opacity:0.3; }
+
+        @media(max-width:600px){
+            .admin-stats-grid { grid-template-columns:repeat(2,1fr); }
+            .admin-order-card { flex-direction:column;align-items:flex-start; }
+            .ao-actions { width:100%;justify-content:flex-end; }
+        }
+        </style>
+
+        <!-- Lock Screen -->
+        <div id="admin-lock-screen">
+            <div class="lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h2>Admin Access</h2>
+            <p style="color:var(--text-muted);font-size:0.88rem;max-width:280px;">
+                Enter the admin passcode to continue.
+            </p>
+            <input type="password" id="admin-pass-input" placeholder="••••••••"
+                   onkeydown="if(event.key==='Enter')adminUnlock()" />
+            <div class="admin-err" id="admin-err"></div>
+            <button class="btn" style="max-width:200px;" onclick="adminUnlock()">
+                <i class="fa-solid fa-right-to-bracket"></i>&nbsp; Unlock
+            </button>
+        </div>
+
+        <!-- Dashboard (hidden until unlocked) -->
+        <div id="admin-dashboard">
+            <div class="admin-header">
+                <h2>
+                    <i class="fa-solid fa-shield-halved" style="color:var(--primary);"></i>
+                    Ceroviel Admin
+                    <span class="admin-live-dot"></span>
+                </h2>
+                <button class="btn btn-sm btn-secondary" onclick="adminLock()">
+                    <i class="fa-solid fa-lock"></i> Lock
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-val" id="admin-s-revenue">₹0</div>
+                    <div class="admin-stat-lbl">Total Revenue</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-val" id="admin-s-total">0</div>
+                    <div class="admin-stat-lbl">Total Orders</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-val" id="admin-s-pending">0</div>
+                    <div class="admin-stat-lbl">Pending</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-val" id="admin-s-completed">0</div>
+                    <div class="admin-stat-lbl">Completed</div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="admin-controls">
+                <input type="text" id="admin-search" placeholder="Search order ID or username..." oninput="adminRender()">
+                <button class="admin-filter-btn active" data-f="all"      onclick="adminFilter('all',this)">All</button>
+                <button class="admin-filter-btn" data-f="pending"   onclick="adminFilter('Pending',this)">Pending</button>
+                <button class="admin-filter-btn" data-f="processing" onclick="adminFilter('Processing',this)">Processing</button>
+                <button class="admin-filter-btn" data-f="completed" onclick="adminFilter('Completed',this)">Completed</button>
+                <button class="admin-filter-btn" data-f="cancelled" onclick="adminFilter('Cancelled',this)">Cancelled</button>
+            </div>
+
+            <!-- Batch actions -->
+            <div class="admin-batch">
+                <button class="btn btn-sm btn-secondary" onclick="adminExport('json')">
+                    <i class="fa-solid fa-file-export"></i> Export JSON
+                </button>
+                <button class="btn btn-sm btn-secondary" onclick="adminExport('csv')">
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="adminClearAll()">
+                    <i class="fa-solid fa-trash"></i> Clear All
+                </button>
+            </div>
+
+            <!-- Order list -->
+            <div class="admin-order-list" id="admin-order-list"></div>
+        </div>
+    </div>
+
     <!-- ─── MODAL CONTAINER (for other popups) ─── -->
     <div id="modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeModal()">
         <div class="modal-box" id="modal-box">
@@ -3123,12 +4375,26 @@
         </div>
     </div>
 
+    <!-- ─── CENTRE MENU OVERLAY ─── -->
+    <div id="centre-menu-overlay" class="centre-menu-overlay" onclick="toggleCentreMenu()"></div>
+    <div id="centre-menu" class="centre-menu">
+        <div class="centre-menu-item" onclick="toggleCentreMenu();navTo('clock-view',null)">
+            <i class="fa-solid fa-stopwatch"></i> Focus Timer
+        </div>
+        <div class="centre-menu-item" onclick="toggleCentreMenu();navTo('checklist-view',null)">
+            <i class="fa-solid fa-check-square"></i> New Task
+        </div>
+        <div class="centre-menu-item" onclick="toggleCentreMenu();navTo('uadmin-view',null)">
+            <i class="fa-solid fa-shield-halved"></i> Admin Panel
+        </div>
+    </div>
+
     <!-- ─── BOTTOM NAV ─── -->
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <button class="bottom-btn active" data-view="home-view" onclick="navTo('home-view',this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
             <button class="bottom-btn" data-view="checklist-view" onclick="navTo('checklist-view',this)"><i class="fa-solid fa-list-check"></i><span>Tasks</span></button>
-            <button class="bottom-add" onclick="navTo('clock-view',null)" aria-label="Focus timer">＋</button>
+            <button class="bottom-add" onclick="toggleCentreMenu()" aria-label="Open menu">＋</button>
             <button class="bottom-btn" data-view="notes-view" onclick="navTo('notes-view',this)"><i class="fa-solid fa-note-sticky"></i><span>Notes</span></button>
             <button class="bottom-btn" data-view="llama-view" onclick="navTo('llama-view',this)"><i class="fa-solid fa-wand-magic-sparkles"></i><span>AI</span></button>
         </div>
@@ -6369,8 +7635,15 @@
             initWordScramble();
 
             const hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById(hash)) switchView(hash, null, false);
-            else if (hash && document.getElementById(hash + '-view')) switchView(hash + '-view', null, false);
+            const path = window.location.pathname;
+            
+            if (path.endsWith('/uadmin') || hash === 'uadmin' || hash === 'uadmin-view') {
+                switchView('uadmin-view', null, false);
+            } else if (hash && document.getElementById(hash)) {
+                switchView(hash, null, false);
+            } else if (hash && document.getElementById(hash + '-view')) {
+                switchView(hash + '-view', null, false);
+            }
 
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.food-search-row') && !e.target.closest('#food-suggestions')) {
@@ -6403,6 +7676,8 @@
     function updateAuthButton() {
         if (!authButton) return;
         const savedUser = localStorage.getItem("ceroviel_user");
+        const adminBtn = document.getElementById("sidebar-admin-btn");
+        
         if (savedUser) {
             try {
                 const user = JSON.parse(savedUser);
@@ -6417,14 +7692,25 @@
                         location.reload();
                     }
                 };
+                
+                // Show admin button if username is ceroviel
+                if (adminBtn) {
+                    if (user.username && user.username.toLowerCase() === 'ceroviel') {
+                        adminBtn.style.display = 'block';
+                    } else {
+                        adminBtn.style.display = 'none';
+                    }
+                }
             } catch (error) {
                 localStorage.removeItem("ceroviel_user");
+                if (adminBtn) adminBtn.style.display = 'none';
             }
         } else {
             authButton.title = "Login";
             authButton.innerHTML = `Login`;
             authButton.style.cssText = 'cursor:pointer;font-size:0.85rem;font-weight:600;letter-spacing:0.02em;';
             authButton.onclick = function () { navTo('login-view'); };
+            if (adminBtn) adminBtn.style.display = 'none';
         }
     }
     updateAuthButton();
@@ -6547,6 +7833,260 @@
             signupBtn.disabled = false;
         });
     }
+    // ── SocialBooster & Centre Menu ──
+    window.toggleCentreMenu = function() {
+        const overlay = document.getElementById('centre-menu-overlay');
+        const menu = document.getElementById('centre-menu');
+        if (menu.classList.contains('open')) {
+            overlay.classList.remove('open');
+            menu.classList.remove('open');
+            document.body.style.overflow = '';
+        } else {
+            overlay.classList.add('open');
+            menu.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+    };
+
+    window.switchSbTab = function(tabName) {
+        document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.sb-tab-content').forEach(c => c.classList.remove('active'));
+        
+        event.target.classList.add('active');
+        document.getElementById(`sb-${tabName}-tab`).classList.add('active');
+    };
+
+    window.calcSbPrice = function(type, ratePer1k) {
+        const input = document.getElementById(`sb-${type}-input`);
+        const costDisplay = document.getElementById(`sb-${type}-cost`);
+        const warnDisplay = document.getElementById(`sb-${type}-warn`);
+        const btn = document.getElementById(`sb-${type}-btn`);
+        
+        let amount = parseInt(input.value) || 0;
+        if (amount < 0) amount = 0;
+        
+        let cost = (amount / 1000) * ratePer1k;
+        costDisplay.innerText = `₹${cost.toFixed(2)}`;
+        
+        if (type === 'views') {
+            if (amount > 0 && cost < 10) {
+                if(warnDisplay) warnDisplay.style.display = 'block';
+                if(btn) btn.disabled = true;
+            } else {
+                if(warnDisplay) warnDisplay.style.display = 'none';
+                if(btn) btn.disabled = false;
+            }
+        }
+    };
+
+    window.submitSbOrder = function(type, ratePer1k) {
+        const targetInput = document.getElementById(`sb-${type}-target`);
+        const contactInput = document.getElementById(`sb-${type}-contact`);
+        const qtyInput = document.getElementById(`sb-${type}-input`);
+        
+        const target = targetInput.value.trim();
+        const contact = contactInput.value.trim();
+        const qty = parseInt(qtyInput.value) || 0;
+        
+        if (!target) return showToast('Please enter the target Instagram link/username', 'error');
+        if (qty <= 0) return showToast('Please enter a valid quantity', 'error');
+        
+        let cost = (qty / 1000) * ratePer1k;
+        if (type === 'views' && cost < 10) return showToast('Minimum order for views is ₹10', 'error');
+        
+        const order = {
+            id: '#SB-' + Math.floor(1000 + Math.random() * 9000),
+            timestamp: new Date().toISOString(),
+            service: type.charAt(0).toUpperCase() + type.slice(1),
+            target: target,
+            contact: contact,
+            amount: qty,
+            totalCost: parseFloat(cost.toFixed(2)),
+            status: 'Pending'
+        };
+        
+        let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('ceroviel_sb_orders', JSON.stringify(orders));
+        
+        targetInput.value = '';
+        contactInput.value = '';
+        qtyInput.value = '';
+        calcSbPrice(type, ratePer1k);
+        
+        showToast(`Order Placed! ID: ${order.id}`, 'success');
+        if (document.getElementById('uadmin-view').classList.contains('active')) adminRender();
+    };
+
+    // ── Admin Panel Logic ──
+    let adminCurrentFilter = 'all';
+    
+    window.adminUnlock = function() {
+        const pass = document.getElementById('admin-pass-input').value;
+        const err = document.getElementById('admin-err');
+        if (pass === 'admin123' || sessionStorage.getItem('ceroviel_admin') === 'true') {
+            sessionStorage.setItem('ceroviel_admin', 'true');
+            document.getElementById('admin-lock-screen').style.display = 'none';
+            document.getElementById('admin-dashboard').classList.add('unlocked');
+            adminRender();
+        } else {
+            err.innerText = 'Incorrect passcode';
+            setTimeout(() => err.innerText = '', 2000);
+        }
+    };
+    
+    window.adminLock = function() {
+        sessionStorage.removeItem('ceroviel_admin');
+        document.getElementById('admin-lock-screen').style.display = 'flex';
+        document.getElementById('admin-dashboard').classList.remove('unlocked');
+        document.getElementById('admin-pass-input').value = '';
+    };
+
+    window.adminFilter = function(filter, btnEl) {
+        adminCurrentFilter = filter;
+        document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+        adminRender();
+    };
+
+    window.adminRender = function() {
+        if (sessionStorage.getItem('ceroviel_admin') !== 'true') return;
+        
+        let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
+        
+        // Compute stats
+        const totalRevenue = orders.filter(o => o.status === 'Completed').reduce((sum, o) => sum + o.totalCost, 0);
+        document.getElementById('admin-s-revenue').innerText = '₹' + totalRevenue.toLocaleString('en-IN');
+        document.getElementById('admin-s-total').innerText = orders.length;
+        document.getElementById('admin-s-pending').innerText = orders.filter(o => o.status === 'Pending').length;
+        document.getElementById('admin-s-completed').innerText = orders.filter(o => o.status === 'Completed').length;
+        
+        // Filter and Search
+        const search = document.getElementById('admin-search').value.toLowerCase();
+        
+        let filtered = orders;
+        if (adminCurrentFilter !== 'all') {
+            filtered = filtered.filter(o => o.status === adminCurrentFilter);
+        }
+        if (search) {
+            filtered = filtered.filter(o => 
+                o.id.toLowerCase().includes(search) || 
+                o.target.toLowerCase().includes(search) || 
+                (o.contact && o.contact.toLowerCase().includes(search))
+            );
+        }
+        
+        // Sort newest first
+        filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        const list = document.getElementById('admin-order-list');
+        list.innerHTML = '';
+        
+        if (filtered.length === 0) {
+            list.innerHTML = `<div class="admin-empty"><i class="fa-solid fa-inbox"></i> No orders found</div>`;
+            return;
+        }
+        
+        filtered.forEach(o => {
+            const date = new Date(o.timestamp).toLocaleString('en-IN', {
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            
+            list.innerHTML += `
+                <div class="admin-order-card">
+                    <div>
+                        <div class="ao-id">${o.id}</div>
+                        <div class="ao-date">${date}</div>
+                    </div>
+                    <div class="ao-service"><i class="fa-brands fa-instagram"></i> ${o.service}</div>
+                    <div class="ao-target">
+                        ${o.target}
+                        <button class="copy-btn" onclick="copyText('${o.target}')" title="Copy"><i class="fa-solid fa-copy"></i></button>
+                    </div>
+                    <div class="ao-qty">${o.amount.toLocaleString()}</div>
+                    <div class="ao-price">₹${o.totalCost.toLocaleString()}</div>
+                    <div class="ao-status ${o.status.toLowerCase()}">${o.status}</div>
+                    <div class="ao-actions">
+                        <select onchange="adminChangeStatus('${o.id}', this.value)">
+                            <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                            <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                        <button onclick="adminDelete('${o.id}')" title="Delete Order"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+    };
+    
+    window.adminChangeStatus = function(id, newStatus) {
+        let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
+        const idx = orders.findIndex(o => o.id === id);
+        if (idx !== -1) {
+            orders[idx].status = newStatus;
+            localStorage.setItem('ceroviel_sb_orders', JSON.stringify(orders));
+            adminRender();
+            showToast(`Order ${id} marked as ${newStatus}`, 'success');
+        }
+    };
+    
+    window.adminDelete = function(id) {
+        if (!confirm(`Delete order ${id}? This cannot be undone.`)) return;
+        let orders = JSON.parse(localStorage.getItem('ceroviel_sb_orders') || '[]');
+        orders = orders.filter(o => o.id !== id);
+        localStorage.setItem('ceroviel_sb_orders', JSON.stringify(orders));
+        adminRender();
+        showToast('Order deleted', 'success');
+    };
+    
+    window.adminClearAll = function() {
+        if (!confirm('Are you sure you want to delete ALL orders?')) return;
+        localStorage.removeItem('ceroviel_sb_orders');
+        adminRender();
+        showToast('All orders cleared', 'success');
+    };
+    
+    window.adminExport = function(type) {
+        const orders = localStorage.getItem('ceroviel_sb_orders') || '[]';
+        if (type === 'json') {
+            const blob = new Blob([orders], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ceroviel-orders-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        } else if (type === 'csv') {
+            const arr = JSON.parse(orders);
+            if (!arr.length) return showToast('No orders to export', 'error');
+            const headers = ['ID', 'Date', 'Service', 'Target', 'Contact', 'Amount', 'Cost', 'Status'];
+            const rows = arr.map(o => [
+                o.id, o.timestamp, o.service, `"${o.target}"`, `"${o.contact}"`, o.amount, o.totalCost, o.status
+            ]);
+            const csv = [headers.join(',')].concat(rows.map(r => r.join(','))).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ceroviel-orders-${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+    };
+    
+    window.copyText = function(txt) {
+        navigator.clipboard.writeText(txt).then(() => showToast('Copied to clipboard!', 'success'));
+    };
+
+    // Auto-unlock if session exists and user navigates to uadmin directly
+    const _origNavUadmin = window.navTo;
+    window.navTo = function(id, btn) {
+        _origNavUadmin && _origNavUadmin(id, btn);
+        if (id === 'uadmin-view') {
+            if (sessionStorage.getItem('ceroviel_admin') === 'true') {
+                adminUnlock();
+            }
+        }
+    };
 })();
 </script>
 </body>
