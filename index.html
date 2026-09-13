@@ -197,9 +197,13 @@
             border: 0.5px solid rgba(0, 0, 0, 0.06) !important;
         }
 
-        /* Frosted login/signup button → true rectangle */
+        /* Frosted login/signup/reset button → true rectangle */
         .frosted-glass #loginBtn,
-        .frosted-glass #signupBtn {
+        .frosted-glass #signupBtn,
+        .frosted-glass #forgotPwBtn,
+        .frosted-glass #verifyOtpBtn,
+        .frosted-glass #resetPwBtn,
+        .frosted-glass #resendOtpBtn {
             border-radius: 8px !important;
             background: rgba(var(--primary-rgb), 0.3) !important;
             color: #fff !important;
@@ -212,7 +216,11 @@
                         inset 0 0.5px 0 rgba(255, 255, 255, 0.15) !important;
         }
         [data-theme="light"].frosted-glass #loginBtn,
-        [data-theme="light"].frosted-glass #signupBtn {
+        [data-theme="light"].frosted-glass #signupBtn,
+        [data-theme="light"].frosted-glass #forgotPwBtn,
+        [data-theme="light"].frosted-glass #verifyOtpBtn,
+        [data-theme="light"].frosted-glass #resetPwBtn,
+        [data-theme="light"].frosted-glass #resendOtpBtn {
             background: rgba(var(--primary-rgb), 0.25) !important;
             border: 0.5px solid rgba(var(--primary-rgb), 0.3) !important;
             color: var(--text) !important;
@@ -4129,6 +4137,9 @@
                 <input id="login-password" type="password" placeholder="Password" autocomplete="current-password">
                 <button class="btn" id="loginBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Login</button>
                 <div id="login-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
+                <div style="text-align:center;margin-top:10px;">
+                    <a href="#" onclick="navTo('forgot-pw-view');return false;" style="color:var(--primary);font-weight:500;text-decoration:none;font-size:0.9rem;">Forgot Password?</a>
+                </div>
                 <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
                     Don't have an account?
                     <a href="#" onclick="navTo('signup-view');return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">Sign up</a>
@@ -4151,6 +4162,49 @@
                     Already have an account?
                     <a href="#" onclick="navTo('login-view');return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">Login</a>
                 </div>
+            </div>
+        </div>
+
+        <!-- ─── FORGOT PASSWORD VIEW ─── -->
+        <div id="forgot-pw-view" class="view-section">
+            <div class="card" style="max-width:400px;margin:0 auto;position:relative;">
+                <a href="#" onclick="navTo('login-view');return false;" style="position:absolute;top:18px;left:18px;color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back to Login"><i class="fa-solid fa-arrow-left"></i></a>
+                <h2 style="text-align:center;"><i class="fa-solid fa-key"></i> Forgot Password</h2>
+                <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:18px;">Enter your username and we'll send a verification code to your registered email.</p>
+                <input id="forgot-username" type="text" placeholder="Username" autocomplete="username">
+                <button class="btn" id="forgotPwBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Send Verification Code</button>
+                <div id="forgot-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
+                <div style="text-align:center;margin-top:20px;color:var(--text-muted);">
+                    Remember your password?
+                    <a href="#" onclick="navTo('login-view');return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">Login</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── OTP VERIFY VIEW ─── -->
+        <div id="otp-verify-view" class="view-section">
+            <div class="card" style="max-width:400px;margin:0 auto;position:relative;">
+                <a href="#" onclick="navTo('forgot-pw-view');return false;" style="position:absolute;top:18px;left:18px;color:var(--text-muted);font-size:1.2rem;text-decoration:none;" title="Back"><i class="fa-solid fa-arrow-left"></i></a>
+                <h2 style="text-align:center;"><i class="fa-solid fa-envelope-open-text"></i> Enter Code</h2>
+                <p id="otp-email-hint" style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:18px;">A 6-digit code was sent to your email.</p>
+                <input id="otp-input" type="text" placeholder="6-digit code" maxlength="6" inputmode="numeric" autocomplete="one-time-code" style="text-align:center;font-size:1.5rem;letter-spacing:8px;font-weight:700;">
+                <button class="btn" id="verifyOtpBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Verify Code</button>
+                <div id="otp-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
+                <div style="text-align:center;margin-top:15px;">
+                    <button class="btn" id="resendOtpBtn" style="padding:0.6rem 1.2rem;font-size:0.85rem;opacity:0.5;" disabled>Resend Code (60s)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── RESET PASSWORD VIEW ─── -->
+        <div id="reset-pw-view" class="view-section">
+            <div class="card" style="max-width:400px;margin:0 auto;position:relative;">
+                <h2 style="text-align:center;"><i class="fa-solid fa-lock"></i> Set New Password</h2>
+                <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-bottom:18px;">Enter your new password below.</p>
+                <input id="reset-new-password" type="password" placeholder="New Password" autocomplete="new-password">
+                <input id="reset-confirm-password" type="password" placeholder="Confirm New Password" autocomplete="new-password">
+                <button class="btn" id="resetPwBtn" style="padding:0.85rem;font-size:1rem;letter-spacing:0.03em;">Reset Password</button>
+                <div id="reset-message" style="text-align:center;margin-top:15px;min-height:20px;color:var(--text-muted);"></div>
             </div>
         </div>
 
@@ -8010,7 +8064,7 @@
                 const response = await fetch(`${API}/signup`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ username, email, password })
                 });
                 const data = await response.json();
 
@@ -8042,6 +8096,240 @@
             signupBtn.disabled = false;
         });
     }
+
+    // ── Forgot Password Flow ──
+    let _fpUsername = '';
+    let _fpResetToken = '';
+    let _resendTimer = null;
+
+    // Step 1: Request OTP
+    const forgotPwBtn = document.getElementById("forgotPwBtn");
+    const forgotMessage = document.getElementById("forgot-message");
+
+    if (forgotPwBtn) {
+        forgotPwBtn.addEventListener("click", async () => {
+            const username = document.getElementById("forgot-username").value.trim();
+            if (!username) {
+                forgotMessage.style.color = "var(--danger)";
+                forgotMessage.textContent = "Please enter your username.";
+                return;
+            }
+
+            forgotPwBtn.disabled = true;
+            forgotMessage.style.color = "var(--text-muted)";
+            forgotMessage.textContent = "Sending verification code...";
+
+            try {
+                const response = await fetch(`${API}/forgot-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    _fpUsername = username;
+                    forgotMessage.style.color = "var(--success)";
+                    forgotMessage.textContent = data.message;
+
+                    // Show masked email hint on OTP page
+                    const otpHint = document.getElementById("otp-email-hint");
+                    if (otpHint && data.masked_email) {
+                        otpHint.textContent = `A 6-digit code was sent to ${data.masked_email}`;
+                    }
+
+                    setTimeout(() => {
+                        forgotMessage.textContent = "";
+                        forgotMessage.style.color = "";
+                        navTo('otp-verify-view');
+                        startResendCooldown();
+                    }, 1000);
+                } else {
+                    forgotMessage.style.color = "var(--danger)";
+                    forgotMessage.textContent = data.message || "Failed to send code.";
+                }
+            } catch (error) {
+                console.error(error);
+                forgotMessage.style.color = "var(--danger)";
+                forgotMessage.textContent = "Unable to connect to the server.";
+            }
+            forgotPwBtn.disabled = false;
+        });
+    }
+
+    // Step 2: Verify OTP
+    const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+    const otpMessage = document.getElementById("otp-message");
+
+    if (verifyOtpBtn) {
+        verifyOtpBtn.addEventListener("click", async () => {
+            const otp = document.getElementById("otp-input").value.trim();
+            if (!otp || otp.length !== 6) {
+                otpMessage.style.color = "var(--danger)";
+                otpMessage.textContent = "Please enter the 6-digit code.";
+                return;
+            }
+
+            verifyOtpBtn.disabled = true;
+            otpMessage.style.color = "var(--text-muted)";
+            otpMessage.textContent = "Verifying...";
+
+            try {
+                const response = await fetch(`${API}/verify-otp`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: _fpUsername, otp })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    _fpResetToken = data.reset_token;
+                    otpMessage.style.color = "var(--success)";
+                    otpMessage.textContent = "Code verified!";
+                    document.getElementById("otp-input").value = "";
+                    setTimeout(() => {
+                        otpMessage.textContent = "";
+                        otpMessage.style.color = "";
+                        navTo('reset-pw-view');
+                    }, 800);
+                } else {
+                    otpMessage.style.color = "var(--danger)";
+                    otpMessage.textContent = data.message || "Invalid code.";
+                }
+            } catch (error) {
+                console.error(error);
+                otpMessage.style.color = "var(--danger)";
+                otpMessage.textContent = "Unable to connect to the server.";
+            }
+            verifyOtpBtn.disabled = false;
+        });
+    }
+
+    // Step 3: Reset Password
+    const resetPwBtn = document.getElementById("resetPwBtn");
+    const resetMessage = document.getElementById("reset-message");
+
+    if (resetPwBtn) {
+        resetPwBtn.addEventListener("click", async () => {
+            const newPassword = document.getElementById("reset-new-password").value;
+            const confirmPassword = document.getElementById("reset-confirm-password").value;
+
+            if (!newPassword || !confirmPassword) {
+                resetMessage.style.color = "var(--danger)";
+                resetMessage.textContent = "Please fill in both fields.";
+                return;
+            }
+            if (newPassword.length < 6) {
+                resetMessage.style.color = "var(--danger)";
+                resetMessage.textContent = "Password must be at least 6 characters.";
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                resetMessage.style.color = "var(--danger)";
+                resetMessage.textContent = "Passwords do not match.";
+                return;
+            }
+
+            resetPwBtn.disabled = true;
+            resetMessage.style.color = "var(--text-muted)";
+            resetMessage.textContent = "Resetting password...";
+
+            try {
+                const response = await fetch(`${API}/reset-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: _fpUsername, reset_token: _fpResetToken, new_password: newPassword })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    resetMessage.style.color = "var(--success)";
+                    resetMessage.textContent = "Password reset successful! Redirecting to login...";
+                    _fpUsername = '';
+                    _fpResetToken = '';
+                    document.getElementById("reset-new-password").value = "";
+                    document.getElementById("reset-confirm-password").value = "";
+                    setTimeout(() => {
+                        resetMessage.textContent = "";
+                        resetMessage.style.color = "";
+                        navTo('login-view');
+                        if (typeof showToast === 'function') showToast('Password reset successful! Please log in.', 'success');
+                    }, 1500);
+                } else {
+                    resetMessage.style.color = "var(--danger)";
+                    resetMessage.textContent = data.message || "Reset failed.";
+                }
+            } catch (error) {
+                console.error(error);
+                resetMessage.style.color = "var(--danger)";
+                resetMessage.textContent = "Unable to connect to the server.";
+            }
+            resetPwBtn.disabled = false;
+        });
+    }
+
+    // Resend OTP with 60s cooldown
+    function startResendCooldown() {
+        const resendBtn = document.getElementById("resendOtpBtn");
+        if (!resendBtn) return;
+        let seconds = 60;
+        resendBtn.disabled = true;
+        resendBtn.style.opacity = "0.5";
+        resendBtn.textContent = `Resend Code (${seconds}s)`;
+
+        if (_resendTimer) clearInterval(_resendTimer);
+        _resendTimer = setInterval(() => {
+            seconds--;
+            resendBtn.textContent = `Resend Code (${seconds}s)`;
+            if (seconds <= 0) {
+                clearInterval(_resendTimer);
+                _resendTimer = null;
+                resendBtn.disabled = false;
+                resendBtn.style.opacity = "1";
+                resendBtn.textContent = "Resend Code";
+            }
+        }, 1000);
+    }
+
+    const resendOtpBtn = document.getElementById("resendOtpBtn");
+    if (resendOtpBtn) {
+        resendOtpBtn.addEventListener("click", async () => {
+            if (!_fpUsername) return;
+            resendOtpBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API}/forgot-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: _fpUsername })
+                });
+                const data = await response.json();
+                const otpMsg = document.getElementById("otp-message");
+
+                if (data.success) {
+                    if (otpMsg) {
+                        otpMsg.style.color = "var(--success)";
+                        otpMsg.textContent = "A new code has been sent!";
+                    }
+                    if (data.masked_email) {
+                        const otpHint = document.getElementById("otp-email-hint");
+                        if (otpHint) otpHint.textContent = `A 6-digit code was sent to ${data.masked_email}`;
+                    }
+                    startResendCooldown();
+                } else {
+                    if (otpMsg) {
+                        otpMsg.style.color = "var(--danger)";
+                        otpMsg.textContent = data.message || "Could not resend code.";
+                    }
+                    startResendCooldown();
+                }
+            } catch (error) {
+                console.error(error);
+                startResendCooldown();
+            }
+        });
+    }
+
     // ── SocialBooster & Centre Menu ──
     window.toggleCentreMenu = function() {
         const overlay = document.getElementById('centre-menu-overlay');
